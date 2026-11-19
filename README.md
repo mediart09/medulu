@@ -7,8 +7,8 @@ Semua file aman dijalankan ulang (idempoten), jadi pada database yang sudah berj
 
 | No | File | Isi | Bergantung pada |
 |----|------|-----|-----------------|
-| 01 | `01_master_data_warga.sql` | Tabel warga, input/tambah warga, verifikasi NKK, bucket privat `kk` | prasyarat "update warga" (lihat catatan 1) |
-| 02 | `02_login_sesi.sql` | **Admin** (admin_rt, admin_cadangan, `_is_admin`), sesi login, login/cek sesi/logout, validasi token | 01 |
+| 01 | `01_master_data_warga.sql` | Tabel warga (lengkap), view `v_warga`, input/tambah warga, verifikasi NKK, bucket privat `kk` | tidak ada |
+| 02 | `02_login_sesi.sql` | **Admin** (admin_rt, admin_cadangan, `_is_admin`), **identitas RT** (`identitas_rt`, `ref_kecamatan`, `_format_nomor`), sesi login, login/cek sesi/logout | 01 |
 | 03 | `03_korespondensi_arsip.sql` | Surat masuk/keluar, undangan, notula, penomoran otomatis, bucket `arsip_surat`, Agenda RT, ubah data | 02 |
 | 04 | `04_surat_pengantar.sql` | Pengajuan & persetujuan Surat Pengantar, notifikasi lonceng (sudah memuat 04b: input manual data lama) | 03 |
 | 05 | `05_mydata.sql` | MyData: profil, keluarga, arsip SP se-NKK, tambah anggota | 04 |
@@ -29,20 +29,40 @@ Semua file aman dijalankan ulang (idempoten), jadi pada database yang sudah berj
 
 Nama admin tidak lagi tertulis di index.html maupun SQL. Admin ditetapkan lewat aplikasi:
 
-1. **Pertama kali dibuka**, bila belum ada admin, halaman login menampilkan modal **Buat Admin RT**: isi No. HP (nama pengguna) dan kata sandi (minimal 8 karakter, tidak boleh 16 digit angka). Setelah satu admin ada, modal tidak pernah muncul lagi dan server menolak pembuatan admin kedua.
+1. **Pertama kali dibuka**, bila belum ada admin, halaman login menampilkan modal **Buat Admin RT**: pilih **Kecamatan**, isi **Kelurahan**, **RW**, **RT**, lalu **No. HP** (nama pengguna) dan **kata sandi** (minimal 8 karakter, tidak boleh 16 digit angka, diulang dua kali). Wilayah dan akun admin disimpan bersamaan. Setelah satu admin ada, modal tidak pernah muncul lagi dan server menolak pembuatan admin kedua.
 2. **Login**: No. HP + kata sandi admin = **Admin utama**. No. HP + NIK = pengguna biasa, termasuk bila No. HP-nya sama dengan No. HP admin.
 3. **Admin Cadangan**: dari Admin utama, buka Administrasi > **Admin Cadangan**, isi No. HP + NIK (1 orang saja; bisa diubah/dihapus). Orangnya harus sudah terdaftar di data warga dengan No. HP yang sama. Ia masuk lewat login biasa (No. HP + NIK) dan mendapat hak admin yang sama. Hanya Admin utama yang melihat tombol ini.
 4. Semua pemeriksaan hak admin di SQL (Korespondensi, Database Warga, Laporan, Polling, Ronda, Profil RT, dst.) kini memakai satu fungsi: `_is_admin(token)` di file 02.
 5. Admin utama tidak punya baris di tabel `warga`, jadi menu **MyData** dan **Pengajuan Surat Pengantar** (data pribadi) tidak tersedia baginya; untuk keperluan pribadi ia masuk dengan No. HP + NIK. Admin utama tidak ikut memberi suara polling dan bukan petugas ronda.
 6. Kolom `warga.peran = 'Admin'` **tidak lagi memberi hak admin**. Peran `Pengurus` tetap boleh memproses Surat Pengantar seperti sebelumnya.
 
+## Format nomor surat (semua dokumen)
+
+```
+(no_urut)/(kd_surat)-RT(no_rt)/(kd_kec)(kd_kel)(kd_rw)/bulan romawi/tahun
+contoh Kec. Wua-Wua, Kel. Bonggoeya, RW 05, RT 09:  001/UND-RT09/070105/XI/2026
+```
+
+- Satu fungsi pembentuk: `_format_nomor(urut, kode, tanggal)` di file 02. Dipakai oleh Undangan (UND), Notula (NTL), Surat Keluar (HIM, SPY, PMB, PEN, SED, SP1, SP2, SPK, LL) di 03, Surat Pengantar (SP, SPN, SPW, SPL, SPDP, SPC, SPU, SPI, SPAW) di 04, dan Laporan Kondusifitas (LP) di 13.
+- Nomor urut 3 digit, dihitung per kode per tahun (tidak berubah dari sebelumnya).
+- Kode kecamatan (tabel `ref_kecamatan`): 01 Mandonga, 02 Kendari, 03 Baruga, 04 Poasia, 05 Kendari Barat, 06 Abeli, 07 Wua-Wua, 08 Kadia, 09 Puuwatu, 10 Kambu, 11 Nambo.
+- Kode kelurahan = urutan penginputan (01 untuk kelurahan pertama). Kode RW = nomor RW (2 digit), RT = nomor RT (2 digit).
+- Tersimpan di tabel `identitas_rt` (satu baris). Aplikasi membacanya lewat `get_identitas_rt()` untuk kop/judul laporan dan label RT.
+- Nomor lama yang sudah tersimpan **tidak diubah**; hanya nomor baru yang memakai format ini.
+- **Database yang sudah punya admin**: file 02 mengisi `identitas_rt` otomatis dengan Kec. Wua-Wua (07), Kel. Bonggoeya (01), RW 05, RT 09. Ubah nilainya di bagian 3 file 02 sebelum dijalankan bila bukan itu. Mengoreksi identitas sesudahnya:
+  ```sql
+  update public.identitas_rt set kd_kec='07', nama_kec='Wua-Wua', nama_kel='Bonggoeya', no_rw='05', no_rt='09';
+  ```
+- Kop dan tanda tangan pada PDF yang dibuat Apps Script dari template Google Docs (Surat Keluar, Undangan, Notula, Surat Pengantar) tidak berasal dari index.html. Nomornya otomatis mengikuti format baru karena diambil dari database; tulisan "RT 09 / Kelurahan / Kecamatan" di template Docs diubah manual di templatenya.
+
 ### Lupa kata sandi admin / mengulang pembuatan admin
 Jalankan di Supabase > SQL Editor:
 ```sql
 -- ganti kata sandi admin utama
 update public.admin_rt set sandi_hash = extensions.crypt('SandiBaru123', extensions.gen_salt('bf', 10));
--- ATAU hapus admin supaya modal "Buat Admin RT" muncul lagi di aplikasi
+-- ATAU hapus admin supaya modal "Buat Admin RT" muncul lagi di aplikasi (hapus juga identitasnya)
 delete from public.admin_rt;
+delete from public.identitas_rt;
 ```
 **Penting:** modal Buat Admin bisa diisi siapa pun yang pertama membuka aplikasi. Setelah memasang database dan situs, **segera buka aplikasi dan buat admin Anda** sebelum alamatnya dibagikan.
 
@@ -50,7 +70,7 @@ delete from public.admin_rt;
 1. Buat project Supabase baru. Jalankan file SQL 01 sampai 17 berurutan (lihat catatan 1 di bawah untuk prasyarat "update warga").
 2. Buka `index.html`, cari `KONFIGURASI SUPABASE`, tempel **Project URL** pada `SUPABASE_URL` dan **anon/publishable key** pada `SUPABASE_ANON_KEY`. Jangan pernah memakai service_role key di berkas ini.
 3. Unggah ke GitHub Pages / hosting, buka aplikasinya, lalu buat admin lewat modal.
-4. Masih bersifat khusus RT 09 dan perlu disesuaikan per RT: teks "RT 09" / "RT.09" dan nama kelurahan di index.html, format nomor surat (`RT09`, `RT.09`) di SQL 03, 04, 13, nama/logo aplikasi, serta gambar Cloudinary.
+4. Nomor surat, kop laporan, dan label RT kini mengikuti wilayah yang diisi pada modal Buat Admin, jadi tidak perlu diedit di index.html atau SQL. Yang masih khusus RT 09 dan perlu disesuaikan per RT: nama Ketua RT pada tanda tangan laporan (`LAP.nama` di index.html), teks Visi, template Google Docs, nama/logo aplikasi, serta gambar Cloudinary.
 
 ## Apa yang digabung atau diubah
 
@@ -71,7 +91,7 @@ Tabel lama yang mungkin masih ada di database dan sudah tidak dipakai (boleh di-
 
 ## Catatan penting
 
-1. **Bagian "update warga" tidak ada di zip.** File 01 mensyaratkan kolom tambahan tabel `warga` (`status_kawin`, `no_urut`, `hubungan`, `email`, `link_kk`, `status_tinggal`, dst.), view `v_warga`, dan fungsi `_tgl_aman`. Di database Anda yang sekarang semuanya sudah ada, jadi aman. Untuk membangun database dari nol, file itu harus disediakan dan dijalankan sebelum 01.
+1. **"update warga" dan "update v. warga" sudah digabung ke file 01**: tabel `warga` lengkap (semua kolom tambahan, `no_urut` identity, trigger `warga_rapikan`) dan view `v_warga` (usia dan status pemilu). Fungsi `hitung_status_pemilu` (definisi asli Anda) ikut ditulis di file 01 dengan `create or replace`, dan `_tgl_aman` dibuat otomatis hanya bila belum ada. Jadi file 01 bisa dijalankan pada database kosong.
 2. **`kode.txt` dan `kode anon dan api PILEI.txt` tidak ikut dikemas.** `kode.txt` berisi kunci rahasia (*service key*) Supabase. Jika file zip itu pernah dikirim ke pihak lain, sebaiknya kunci tersebut diganti (rotate) di Supabase > Project Settings > API.
 3. Tabel `petugas_ronda` dimulai **kosong**. Tambahkan petugas lewat Administrasi > Petugas Ronda; sebelum itu tidak ada yang bisa absen ronda.
 4. File 12 dan 13 membaca kolom `nama_asli` langsung dari tabel `warga` (bukan dari `v_warga`). Pastikan kolom itu ada di tabel Anda.
@@ -79,5 +99,7 @@ Tabel lama yang mungkin masih ada di database dan sudah tidak dipakai (boleh di-
 ## Pengujian
 
 Seluruh 17 file dijalankan berurutan **dua kali** (database kosong, lalu ulang) di PostgreSQL 16 lokal dengan tiruan skema Supabase dan prasyarat "update warga" buatan sendiri. Hasilnya tanpa galat, dan daftar fungsi/tabel/view identik dengan seri sumber. Uji fungsi singkat juga lolos: login, pengajuan SP (biasa dan manual Admin), persetujuan, Info Aktual, ronda, polling, arsip, kerentanan. Pengujian ini belum dilakukan pada project Supabase Anda sendiri.
+
+**Catatan perubahan Identitas RT & format nomor (file 01, 02, 03, 04, 13):** ditulis tanpa dijalankan pada PostgreSQL/Supabase sungguhan. Jalankan 01 sampai 17 pada project uji dahulu. File 02 mengganti `status_admin()` dan `buat_admin_awal(...)` (tanda tangan baru dengan 6 parameter); index.html versi ini wajib dipakai bersama file 02 ini.
 
 **Catatan perubahan Admin (file 02, 03, 04, 06, 08, 09, 10, 12, 13, 16):** bagian ini ditulis kemudian dan belum dijalankan pada PostgreSQL/Supabase sungguhan. Alur antarmukanya sudah diuji dengan server tiruan, tetapi SQL-nya belum. Jalankan 02 lalu 03 sampai 17 pada project uji dahulu, dan periksa hasilnya sebelum dipakai warga.
