@@ -194,11 +194,6 @@
   .btn-selengkapnya .bs-panah{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:.68rem}
   .btn-selengkapnya:active{background:rgba(255,255,255,.28)}
 
-  /* Kelas di bawah masih dipakai di dalam subform Data Statistik */
-  .baris-angka{display:flex;align-items:baseline;justify-content:space-between;font-size:.76rem;color:var(--abu);
-    border-bottom:1px dashed #e2e8f0;padding-bottom:5px}
-  .baris-angka b{font-size:1.05rem;color:var(--biru-tua)}
-
   .isi{padding:16px 16px 24px}
   .judul-seksi{font-size:.92rem;font-weight:600;color:var(--biru-tua);margin:28px 2px 12px;display:flex;align-items:center;gap:9px}
   .judul-seksi i{flex:none;width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;
@@ -233,7 +228,7 @@
   .ik{width:28px;height:28px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
   .ik .d{fill:rgba(255,255,255,.30)}
   .fitur span.nama{font-size:12px;font-weight:500;text-align:center;line-height:1.2}
-  /* Lencana (Data Pengajuan, Info Aktual, Polling): di sudut kanan atas ikon dan selalu di depan ikon */
+  /* Lencana (Data Pengajuan,Info Aktual,Polling): di sudut kanan atas ikon dan selalu di depan ikon */
   .fitur .alert,.fitur .badge-notif{position:absolute;top:1px;left:calc(50% + 11px);right:auto;z-index:5}
   .fitur .alert{color:#e53935;font-size:1.1rem;line-height:1;background:#fff;border-radius:50%;box-shadow:0 0 0 1.5px #fff;display:none;
     animation:denyut 1.4s ease-in-out infinite}
@@ -265,14 +260,14 @@
   .sp-titik button{width:8px;height:8px;padding:0;border:0;border-radius:999px;background:#c5d2ea;cursor:pointer;
     transition:width .25s ease, background .25s ease}
   .sp-titik button.aktif{width:22px;background:var(--biru)}
-  /* panah kiri/kanan berada di baris titik (di bawah gambar), tidak menimpa gambar */
+  /* panah kiri/kanan berada di baris titik (di bawah gambar),tidak menimpa gambar */
   .sp-titik.dengan-panah{gap:9px;margin-top:8px}
   .sp-titik .sp-panah{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:50%;
     background:rgba(21,88,201,.5);color:#fff;font-size:.78rem;transition:transform .15s ease, background .2s ease}
   .sp-titik .sp-panah:hover{background:rgba(21,88,201,.7)}
   .sp-titik .sp-panah:active{transform:scale(.9)}
   .sp-titik .sp-panah:focus-visible{outline:3px solid rgba(21,88,201,.45);outline-offset:2px}
-  /* di gambar pertama / terakhir: panah yang tidak bisa dipakai disembunyikan (ruangnya tetap, titik-titik tidak bergeser) */
+  /* di gambar pertama / terakhir: panah yang tidak bisa dipakai disembunyikan (ruangnya tetap,titik-titik tidak bergeser) */
   .sp-titik .sp-panah.lembut{visibility:hidden;pointer-events:none}
   /* Hanya Data Statistik */
   #dsGeser{scroll-snap-type:none}   /* geser bebas; langkah otomatis diatur di pasangCarousel (opsi halaman) */
@@ -291,13 +286,9 @@
   .c13{background:linear-gradient(135deg,#4f46e5,#818cf8);--sh:#4f46e5}
   .c15{background:linear-gradient(135deg,#334155,#64748b);--sh:#334155}
 
-
   /* ---- Polling nonaktif ---- */
   .fitur.nonaktif{opacity:.45;filter:grayscale(1);cursor:not-allowed}
   .fitur.nonaktif:active{transform:none}
-  .baris-saklar{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
-  .baris-saklar b{display:block;font-size:.86rem;color:var(--biru-tua)}
-  .baris-saklar small{display:block;font-size:.7rem;color:var(--abu);margin-top:2px}
   .saklar{position:relative;flex:none;width:46px;height:26px}
   .saklar input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
   .saklar i{position:absolute;inset:0;border-radius:999px;background:#cbd5e1;transition:.2s}
@@ -308,22 +299,17 @@
 
   /* ---- MyData ---- */
   .md-profil{text-align:center;margin-bottom:16px}
-  /* kartu Nama, NIK, NKK: rata kiri seperti Modal Informasi Data; NIK dan NKK sebaris */
+  /* kartu Nama,NIK,NKK: rata kiri seperti Modal Informasi Data; NIK dan NKK sebaris */
   .md-profil.dbm{text-align:left;background:#fff;border-radius:var(--radius);box-shadow:0 6px 16px rgba(11,42,111,.08);padding:14px 12px}
   .md-profil.dbm .dbm-blok{margin-bottom:10px}
   .md-profil.dbm .dbm-dua{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .md-profil.dbm .dbm-dua .dbm-blok{margin-bottom:0}
   .md-profil .md-nm{text-align:center;font-size:1rem;font-weight:600;color:var(--biru-tua);margin-bottom:10px}
-  /* huruf NIK/NKK +1px dari sebelumnya, dibatasi agar keduanya tetap sebaris di lebar layar apa pun */
+  /* huruf NIK/NKK +1px dari sebelumnya,dibatasi agar keduanya tetap sebaris di lebar layar apa pun */
   .md-profil .dbm-dua .dbm-nilai{gap:4px;font-variant-numeric:tabular-nums;
     font-size:clamp(.66rem,min(calc(3.2vw + 1px),calc(5.2vw - 6px)),calc(.84rem + 1px))}
   .md-profil .dbm-dua .dbm-nilai .nilai{font-size:inherit;letter-spacing:0}
   .md-profil .md-mata{width:22px;height:22px;flex:none;font-size:.66rem;border-radius:8px}
-  .md-avatar{width:78px;height:78px;border-radius:50%;margin:4px auto 10px;display:flex;align-items:center;justify-content:center;
-    font-size:2.3rem;color:#fff;box-shadow:0 10px 20px -8px rgba(11,42,111,.45)}
-  .md-avatar.l{background:linear-gradient(135deg,#1558c9,#4aa3ff)}
-  .md-avatar.p{background:linear-gradient(135deg,#e11d74,#fb7185)}
-  .md-nama{font-size:1.05rem;font-weight:600;color:var(--biru-tua)}
   .md-id{margin-top:10px}
   .md-id small{display:block;font-size:12px;color:var(--abu)}
   .md-id .baris{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:2px}
@@ -351,7 +337,6 @@
   .md-tabel th{background:#eef3fb;color:var(--biru-tua);text-align:left;padding:7px 8px;font-weight:600;white-space:nowrap}
   .md-tabel td{padding:7px 8px;border-top:1px solid #eef2f7;vertical-align:top}
   .md-saya{color:#16a34a;margin-left:6px;font-size:.85rem;vertical-align:middle}
-  .md-badge-saya{display:inline-block;background:#ff8a1f;color:#fff;border-radius:999px;font-size:.58rem;padding:1px 7px;margin-left:5px;font-weight:600;vertical-align:middle}
   .md-tombol{width:100%;margin-top:12px;border:0;border-radius:12px;padding:11px;font:inherit;font-size:.82rem;font-weight:600;
     color:#fff;background:linear-gradient(135deg,#1558c9,#2f86ec);cursor:pointer}
   .md-link{border:0;background:#e3ecfb;color:var(--biru);border-radius:9px;padding:5px 11px;font:inherit;font-size:.72rem;
@@ -365,8 +350,7 @@
   .md-status.proses{background:#fff3d6;color:#b45309}
   .md-status.setuju{background:#dcfce7;color:#15803d}
 
-
-  /* ---- MyData: baris rata tengah, kotak ringkas, penanda user di tabel ---- */
+  /* ---- MyData: baris rata tengah,kotak ringkas,penanda user di tabel ---- */
   .md-tengah{text-align:center;padding:10px 0;border-top:1px dashed #e2e8f0}
   .md-tengah small{display:block;font-size:.7rem;color:var(--abu);margin-bottom:2px}
   .md-tengah b{display:block;font-size:.84rem;font-weight:500;color:var(--teks);word-break:break-word;line-height:1.45}
@@ -394,15 +378,15 @@
   .md-tabel .md-mata:disabled{opacity:.4;cursor:default}
   /* field terkunci (diburamkan) di modal Edit Data */
   .mf-field input.dbk-mati{background:#e9eef5;border-color:#dbe2ea;cursor:not-allowed;user-select:none;
-    color:#b3bdca;-webkit-text-fill-color:#b3bdca;text-shadow:none;filter:none}   /* nilai samar, tanpa bayangan/blur (#b3bdca: lebih terang = lebih samar) */
+    color:#b3bdca;-webkit-text-fill-color:#b3bdca;text-shadow:none;filter:none}   /* nilai samar,tanpa bayangan/blur (#b3bdca: lebih terang = lebih samar) */
   .mf-field:has(input.dbk-mati) label{color:#b4bfcc}
-  /* warga wafat di tabel anggota (Modal Informasi Data): latar agak merah, tidak dapat diedit */
+  /* warga wafat di tabel anggota (Modal Informasi Data): latar agak merah,tidak dapat diedit */
   .md-tabel tr.wafat td,.md-tabel tr.saya.wafat td{background:#fde8e8;color:#9b1c1c}
   .md-tabel tr.wafat td:first-child{box-shadow:inset 3px 0 0 #f87171}
   .dbm-wa{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:#15803d;text-decoration:none}
   .dbm-wa i{font-size:1.1rem;color:#25d366}
 
-  /* ---- Database Warga: kolom Disabilitas, Bumil, Bantuan (edit admin) ---- */
+  /* ---- Database Warga: kolom Disabilitas,Bumil,Bantuan (edit admin) ---- */
   .ar.db .db-t th.kr-c,.ar.db .db-t td.kr-c{text-align:center;white-space:nowrap}
   .db-ck{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-8px 0;cursor:pointer}
   .db-ck input{width:18px;height:18px;accent-color:#1558c9;cursor:pointer}
@@ -416,7 +400,7 @@
     font-size:.9rem;color:var(--teks);cursor:pointer}
   .kr-pilih input{width:20px;height:20px;accent-color:#1558c9;flex:none}
 
-  /* ---- Data Statistik: kartu Disabilitas, Bumil dan Bantuan ---- */
+  /* ---- Data Statistik: kartu Disabilitas,Bumil dan Bantuan ---- */
   .kr-dua{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .kr-kotak{display:flex;align-items:center;gap:10px;border-radius:14px;padding:12px;font-size:.74rem}
   .kr-kotak i{font-size:1.4rem;flex:none}
@@ -514,7 +498,6 @@
   .notif-ket{font-size:.7rem;color:var(--abu);margin-top:3px;line-height:1.5}
   .notif-ket b{color:#d97706;font-weight:600}
   .notif-alert{color:#e53935;font-size:.95rem;animation:denyut 1.4s ease-in-out infinite}
-  .badge-baru{background:#e53935;color:#fff;font-size:.6rem;font-weight:600;border-radius:999px;padding:2px 8px}
   .notif-aksi{display:flex;gap:8px;margin-top:10px}
   .notif-aksi .md-link{flex:1;text-align:center;padding:8px 10px}
   .md-link.hijau{background:#16a34a;color:#fff}
@@ -536,7 +519,7 @@
   .agenda-item{padding:12px 0;border-top:1px dashed #e2e8f0}
   .agenda-item:first-of-type{border-top:0;padding-top:2px}
   .agenda-jenis{display:inline-block;font-size:.64rem;font-weight:600;border-radius:999px;padding:2px 9px;color:#fff;margin-bottom:5px}
-  .agenda h3 .agenda-jenis{margin:0 0 0 auto}      /* jenis surat di kanan, sebaris dengan judul seksi */
+  .agenda h3 .agenda-jenis{margin:0 0 0 auto}      /* jenis surat di kanan,sebaris dengan judul seksi */
   .agenda-jenis.masuk{background:#1558c9}.agenda-jenis.keluar{background:#7c3aed}.agenda-jenis.undangan{background:#d98a00}
   .agenda-perihal{font-size:.86rem;font-weight:600;color:var(--teks);margin-bottom:5px;word-break:break-word}
   .agenda-baris{display:flex;gap:8px;font-size:.72rem;color:var(--abu);line-height:1.5}
@@ -617,7 +600,6 @@
   .poll-latar.tampil .poll-kotak{transform:none;opacity:1}
   .poll-kepala{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
   .poll-judul{display:flex;align-items:center;gap:10px;font-size:1.02rem;font-weight:700;color:#0f172a}
-  .poll-tutup{width:34px;height:34px;border:0;border-radius:10px;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:.95rem;flex:none}
   .poll-grup{margin-bottom:15px}
   .poll-label{display:block;font-size:.74rem;font-weight:600;color:#334155;margin-bottom:7px}
   .poll-label b{color:#dc2626}
@@ -639,8 +621,6 @@
   .poll-pesan{font-size:.74rem;margin-top:10px;line-height:1.45}
   .poll-status{display:inline-flex;align-items:center;gap:6px;font-size:.64rem;font-weight:600;border-radius:999px;padding:3px 10px;color:#fff;background:#94a3b8;white-space:nowrap}
   .poll-status.buka{background:#16a34a}.poll-status.hasil{background:#1558c9}.poll-status.tutup{background:#64748b}
-  .poll-rekap-judul{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700;color:#0f172a;margin:20px 0 10px;padding-top:16px;border-top:1px dashed #e2e8f0}
-  .poll-rekap-judul i{color:#2563eb}
   .poll-tanya{background:#eff6ff;border:1px solid #dbeafe;border-radius:15px;padding:14px;font-size:.88rem;font-weight:600;line-height:1.5;color:#0f172a;margin-bottom:15px;white-space:pre-wrap;word-break:break-word}
   .poll-info{text-align:center;margin-bottom:15px;padding:10px 12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0}
   .poll-batas{font-size:.72rem;color:#64748b;margin-bottom:4px}
@@ -664,6 +644,12 @@
   .poll-leg span{display:flex;align-items:center;gap:7px}
   .poll-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
   .poll-total{text-align:center;font-size:.72rem;color:#64748b;margin-top:10px}
+  /* PC/tablet: diagram sebaris dengan label (item rata kiri,nilai rata kanan) */
+  @media (min-width:768px){
+    .poll-isi{display:flex;align-items:center;gap:28px}
+    .poll-isi .poll-pie-wrap{flex:none;margin:0}
+    .poll-isi .poll-legend{flex:1;min-width:0}
+  }
   .poll-konfirm-teks{font-size:.92rem;font-weight:700;color:#0f172a;margin:14px 0 22px;line-height:1.55}
   .poll-konfirm-teks small{display:block;font-weight:400;font-size:.7rem;color:#64748b;margin-top:6px}
 
@@ -744,7 +730,7 @@
   .mf-aksi .batal{background:#eef3fb;color:var(--abu)}
   .mf-aksi .simpan{background:linear-gradient(135deg,#1558c9,#2f86ec);color:#fff}
   .mf-aksi button:disabled{opacity:.6}
-  /* Navigasi record, baris 4 kolom, tombol aksi (Pengaduan, Inventaris, Arsip Polling) */
+  /* Navigasi record,baris 4 kolom,tombol aksi (Pengaduan,Inventaris,Arsip Polling) */
   .mf-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
   .mf-nav button{width:38px;height:38px;border:0;border-radius:10px;background:#e3ecfb;color:var(--biru);cursor:pointer;font-size:.85rem}
   .mf-nav button:active:not(:disabled){transform:scale(.94)}
@@ -790,9 +776,7 @@
   .hdr-kanan.l{background:linear-gradient(135deg,#1558c9,#4aa3ff)}
   .hdr-kanan.p{background:linear-gradient(135deg,#e11d74,#fb7185)}
   .subform-isi{flex:1;overflow-y:auto;padding:16px}
-  .subform-isi.penuh{padding:0;overflow:hidden;display:flex}
-  .subform-isi.penuh iframe{flex:1;width:100%;height:100%;border:0;background:#fff}
-  /* ===== Pendataan (formulir input data warga, tertanam di Medulu; kelas berawalan pd-) ===== */
+  /* ===== Pendataan (formulir input data warga,tertanam di Medulu; kelas berawalan pd-) ===== */
   .pd{--garis:#d8e0ee;--ok:#15803d;--salah:#dc2626;font-size:1rem}
   .pd label{margin-top:0}
   .pd .pd-kartu{background:var(--kartu);border-radius:var(--radius);padding:16px;margin-bottom:14px;
@@ -812,12 +796,12 @@
   .pd label{display:block;font-size:.72rem;font-weight:500;color:var(--abu);margin-bottom:4px}
   .pd label .pd-wajib{color:var(--salah)}
   .pd label .pd-oto{font-weight:400;color:var(--biru);margin-left:4px}
-  .pd input, .pd select{width:100%;padding:10px 12px;border:1.5px solid var(--garis);border-radius:10px;font:inherit;
+  .pd input,.pd select{width:100%;padding:10px 12px;border:1.5px solid var(--garis);border-radius:10px;font:inherit;
     font-size:.88rem;background:#fff;color:var(--teks);outline:none;transition:border-color .15s}
-  .pd input:focus, .pd select:focus{border-color:var(--biru)}
+  .pd input:focus,.pd select:focus{border-color:var(--biru)}
   .pd input[readonly]{background:#f1f5fb;color:var(--biru-tua);font-weight:500}
   .pd input.pd-terisi-otomatis{background:#f1f7ff}
-  .pd input:disabled, .pd select:disabled{background:#f1f5f9;color:#94a3b8}
+  .pd input:disabled,.pd select:disabled{background:#f1f5f9;color:#94a3b8}
   .pd .pd-bantu{font-size:.68rem;color:var(--abu);margin-top:3px}
   .pd .pd-hitung{font-size:.68rem;color:var(--abu);text-align:right;margin-top:2px}
   .pd .pd-baris-telp{display:flex;gap:8px}
@@ -870,7 +854,6 @@
   .st-bar{position:relative;width:100%;height:220px}
   .st-bar.tinggi{height:250px}
   .st-ket{margin-top:10px;font-size:.66rem;color:var(--abu);line-height:1.5}
-  .kartu-stat .baris-angka:last-child{border:0}
 
   /* Modal konfirmasi keluar */
   .modal-latar{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:24px;
@@ -988,7 +971,7 @@
   .bt .accordion-collapse{display:none}
   .bt .accordion-collapse.show{display:block}
   .bt .mb-0{margin-bottom:0}.bt .mb-1{margin-bottom:.25rem}.bt .mb-2{margin-bottom:.5rem}
-  .bt .mt-2{margin-top:.5rem}.bt .mt-3{margin-top:1rem}.bt .me-1{margin-right:.25rem}.bt .ps-3{padding-left:1rem}
+  .bt .mt-2{margin-top:.5rem}.bt .mt-3{margin-top:1rem}.bt .ps-3{padding-left:1rem}
   .bt .text-muted{color:#6c757d}.bt .text-success{color:#198754}.bt .fst-italic{font-style:italic}.bt small{font-size:.875em}
   .bt .search-card{background: #ffffff; border-radius: 20px; height: 48px; padding: 0 18px; box-shadow: 0 8px 24px rgba(0, 51, 102, 0.08); border: 1px solid #e2e8f0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;}
   .bt .search-card i{color: #00529c; font-size: 19px;}
@@ -1010,7 +993,6 @@
   .bt .icon-cyan{background-color: #cffafe; color: #0891b2;}
   .bt .icon-slate{background-color: #e2e8f0; color: #475569;}
   .bt .custom-accordion .accordion-body{padding: 16px 18px 20px 18px; font-size: 13px; line-height: 1.65; color: #475569;}
-  .bt .recommendation-card{background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin-top: 12px; font-size: 12.5px; color: #0369a1;}
   .bt .contact-badge{display: inline-flex; align-items: center; gap: 8px; background-color: #f1f5f9; border: 1px solid #cbd5e1; color: #1e293b; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; margin: 6px 6px 6px 0;}
   /* ===== Subform Info Arsip & Aset (dibatasi di .ar; tanpa Bootstrap) ===== */
   .ar{color:#000}
@@ -1075,13 +1057,6 @@
   /* ===== Subform Profil RT (dibatasi di .pr; ikon Font Awesome tidak ditimpa) ===== */
   .pr{--pr-dark:#0f172a;--pr-blue:#2563eb;--pr-cyan:#06b6d4;--pr-emerald:#10b981;--pr-amber:#f59e0b;--pr-purple:#8b5cf6;--pr-text:#1e293b;--pr-muted:#64748b;--pr-border:#e2e8f0;color:var(--pr-text)}
   .pr *{box-sizing:border-box}
-  .pr .pr-hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#2563eb 100%);color:#fff;border-radius:20px;padding:18px 18px 16px;margin-bottom:16px;box-shadow:0 10px 25px -5px rgba(15,23,42,.18)}
-  .pr .pr-hero-sub{font-size:12px;opacity:.92;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-  .pr .pr-hero-sub i{color:#60a5fa;margin-top:3px}
-  .pr .pr-tenure{margin-top:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:12px}
-  .pr .pr-tenure-ico{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:17px;color:#38bdf8;flex-shrink:0}
-  .pr .pr-tenure-lbl{font-size:11px;opacity:.85;font-weight:600;letter-spacing:.4px}
-  .pr .pr-tenure-val{font-size:13px;font-weight:600;margin-top:2px}
   .pr .pr-masa{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;border:1px solid var(--pr-border);box-shadow:0 10px 25px rgba(0,56,101,.08)}
   .pr .pr-masa-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
   .pr .pr-masa-title{font-size:12px;font-weight:700;color:var(--pr-muted);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
@@ -1090,73 +1065,23 @@
   .pr .pr-masa-bar{width:100%;height:10px;background:#E2E8F0;border-radius:10px;overflow:hidden}
   .pr .pr-masa-fill{height:100%;background:linear-gradient(90deg,#00529C 0%,#FF6B00 100%);border-radius:10px;transition:width .8s ease}
   .pr .pr-masa-val{margin-top:12px;font-size:14px;font-weight:700;color:var(--pr-dark);text-align:center}
-  .pr .pr-card{background:#fff;border-radius:18px;margin-bottom:12px;border:1px solid var(--pr-border);box-shadow:0 4px 6px -1px rgba(0,0,0,.05);overflow:hidden;transition:all .3s ease}
-  .pr .pr-card.active{box-shadow:0 10px 25px -5px rgba(15,23,42,.08);border-color:rgba(37,99,235,.3)}
-  .pr .pr-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;background:#fff}
-  .pr .pr-head-l{display:flex;align-items:center;gap:12px;min-width:0}
-  .pr .pr-ico{width:42px;height:42px;border-radius:12px;background:rgba(37,99,235,.1);color:var(--pr-blue);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-  .pr .pr-ico.hijau{color:var(--pr-emerald);background:rgba(16,185,129,.1)}
-  .pr .pr-ico.kuning{color:var(--pr-amber);background:rgba(245,158,11,.1)}
-  .pr .pr-ico.ungu{color:var(--pr-purple);background:rgba(139,92,246,.1)}
-  .pr .pr-title{font-size:14px;font-weight:600;color:var(--pr-dark)}
-  .pr .pr-sub{font-size:11px;color:var(--pr-muted);margin-top:2px}
-  .pr .pr-arrow{width:30px;height:30px;border-radius:50%;background:#f1f5f9;color:var(--pr-muted);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:transform .3s ease,background .3s ease,color .3s ease}
-  .pr .pr-card.active .pr-arrow{transform:rotate(180deg);background:rgba(37,99,235,.1);color:var(--pr-blue)}
-  .pr .pr-body{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .35s ease,padding .3s ease}
-  .pr .pr-card.active .pr-body{max-height:4000px;padding:8px 16px 18px;border-top:1px solid #f1f5f9}
   .pr .pr-map{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--pr-border);background:#f1f5f9;cursor:pointer;margin-top:8px}
   .pr .pr-map img{width:100%;height:auto;max-height:420px;object-fit:cover;display:block}
   .pr .pr-map-badge{position:absolute;bottom:10px;right:10px;background:rgba(15,23,42,.85);color:#fff;font-size:11px;font-weight:600;padding:6px 12px;border-radius:30px;display:flex;align-items:center;gap:6px}
-  .pr .pr-rekap{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 16px}
-  .pr .pr-rekap-card{background:linear-gradient(135deg,#f8fafc,#edf2f7);border:1px solid var(--pr-border);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px}
-  .pr .pr-rekap-ico{width:38px;height:38px;border-radius:10px;background:#fff;color:var(--pr-blue);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 6px rgba(0,0,0,.04);flex-shrink:0}
-  .pr .pr-rekap-val{font-size:14px;font-weight:800;color:var(--pr-dark)}
-  .pr .pr-rekap-lbl{font-size:11px;color:var(--pr-muted);font-weight:600}
-  .pr .pr-list-title{font-size:12px;font-weight:700;color:var(--pr-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-  .pr .pr-kawasan{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-  .pr .pr-kawasan-item{background:#fff;border:1px solid var(--pr-border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-  .pr .pr-kawasan-name{font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;min-width:0}
-  .pr .pr-kawasan-name i{color:var(--pr-blue)}
-  .pr .pr-kawasan-badge{background:rgba(37,99,235,.08);color:var(--pr-blue);font-size:12px;font-weight:700;padding:3px 9px;border-radius:8px;white-space:nowrap}
-  .pr .pr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
-  .pr .pr-pcard{background:#fff;border:1px solid var(--pr-border);border-radius:16px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.02)}
-  .pr .pr-avatar{width:64px;height:64px;border-radius:50%;margin-bottom:8px;padding:3px;background:linear-gradient(135deg,var(--pr-blue),var(--pr-cyan));flex-shrink:0}
-  .pr .pr-avatar.amber{background:linear-gradient(135deg,var(--pr-amber),#f97316)}
-  .pr .pr-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:#f1f5f9;display:block}
-  .pr .pr-avatar-fb{width:100%;height:100%;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
-  .pr .pr-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--pr-blue);background:rgba(37,99,235,.08);padding:3px 10px;border-radius:20px;margin-bottom:6px}
-  .pr .pr-badge.amber{color:#b45309;background:rgba(245,158,11,.12)}
-  .pr .pr-name{font-size:13px;font-weight:700;color:var(--pr-dark);margin-bottom:4px;line-height:1.3;word-break:break-word}
-  .pr .pr-alamat{font-size:11px;color:var(--pr-muted);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:4px}
-  .pr .pr-wa{margin-top:auto;width:100%;padding:7px 10px;border-radius:8px;background:#25d366;color:#fff;text-decoration:none;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px}
   .pr .pr-kosong{font-size:12px;color:var(--pr-muted);padding:8px 0}
-  .pr .pr-muat{text-align:center;padding:24px;color:var(--pr-muted);font-size:13px}
-  .pr .pr-muat i{display:block;font-size:24px;color:var(--pr-blue);margin-bottom:8px}
   .pr-lightbox{position:absolute;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,.92);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s linear .2s}
   .pr-lightbox.tampil{opacity:1;visibility:visible;transition:opacity .2s ease,visibility 0s}
   .pr-lightbox img{max-width:100%;max-height:90%;border-radius:14px;object-fit:contain;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
   .pr-lightbox .pr-lb-tutup{position:absolute;top:calc(16px + env(safe-area-inset-top));right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;border:0;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-  /* Profil RT: tombol aksi admin, program kerja, editor modal */
+  /* Profil RT: tombol aksi admin,program kerja,editor modal */
   .pr .pr-aksi{display:flex;justify-content:flex-end;margin:8px 0 4px}
   .pr .pr-ket-webp{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:#eef3fb;color:var(--biru-tua);font-size:.74rem;line-height:1.5}
   .pr .pr-ket-webp i{margin-right:4px}
   .pr .pr-btn{border:0;border-radius:10px;padding:8px 14px;font:inherit;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1558c9,#2f86ec);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
   .pr .pr-btn.edit{background:#eef3fb;color:var(--pr-blue);border:1px solid #cfe0fb}
   .pr .pr-btn:disabled{opacity:.6;cursor:wait}
-  .pr .pr-visi{background:linear-gradient(135deg,#f8fafc,#edf2f7);border:1px solid var(--pr-border);border-radius:14px;padding:12px 14px;margin:8px 0 12px}
-  .pr .pr-visi-lbl{font-size:11px;font-weight:800;color:var(--pr-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-  .pr .pr-visi-txt{font-size:13px;line-height:1.55;color:var(--pr-dark);white-space:pre-line}
   .pr .pr-capaian{margin:0 0 12px}
   .pr .pr-capaian-t{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--pr-muted);margin-bottom:6px}
-  .pr .pr-misi{border:1px solid var(--pr-border);border-radius:14px;margin-bottom:10px;overflow:hidden}
-  .pr .pr-misi-h{background:#f8fafc;padding:10px 12px;font-size:12.5px;font-weight:700;color:var(--pr-dark);display:flex;gap:8px;line-height:1.4}
-  .pr .pr-misi-h span{color:var(--pr-blue);flex-shrink:0}
-  .pr .pr-prog{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:9px 12px;border-top:1px solid #f1f5f9;font-size:12px}
-  .pr .pr-prog-t{display:flex;gap:8px;line-height:1.45;min-width:0}
-  .pr .pr-prog-t b{color:var(--pr-muted);flex-shrink:0}
-  .pr .pr-pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:4px}
-  .pr .pr-pill.selesai{background:rgba(16,185,129,.12);color:#047857}
-  .pr .pr-pill.rencana{background:rgba(245,158,11,.14);color:#b45309}
   .pr-ed-row,.pr-ed-misi{border:1px solid #e2e8f0;border-radius:12px;padding:10px;margin-bottom:10px;background:#fff;position:relative}
   .pr-ed-row .mf-field:last-child,.pr-ed-misi>.mf-field:last-of-type{margin-bottom:0}
   .pr-ed-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.74rem;font-weight:700;color:var(--biru-tua)}
@@ -1190,7 +1115,7 @@
   .pr .pr-tbr.kepala>span,.pr .pr-tbr.kepala>span:first-child{color:var(--biru-tua);font-weight:700}
   .pr .pr-tbr.jumlah{border-top:1.5px solid #cbd5e1}
   .pr .pr-tbr.jumlah>span,.pr .pr-tbr.jumlah>span:first-child{color:var(--biru-tua);font-weight:800}
-  /* Bangunan Fungsional: bila lebih dari 5 baris, tampil 2 kolom (nama + jumlah) */
+  /* Bangunan Fungsional: bila lebih dari 5 baris,tampil 2 kolom (nama + jumlah) */
   .pr .pr-fung-2k{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:column;column-gap:16px}
   /* Judul seksi + ikon panah berwarna (gaya seksi Program Kerja) */
   .pr details.md-seksi{--sk:#2563eb;--sk-soft:rgba(37,99,235,.12)}
@@ -1209,7 +1134,6 @@
    aktif di layar >= 768px dan memakai skala --z (besar font/tombol) dan
    --lb (lebar maksimum isi halaman).
    ===================================================================== */
-
 
 /* Korespondensi (Info Arsip & Aset): tabel menurun seperti Surat Pengantar */
 .ar .ar-box.sp.kor{overflow-x:auto}
@@ -1690,8 +1614,7 @@
   .sp-slide{transition:box-shadow .2s ease}
   .sp-slide:hover{box-shadow:0 10px 24px rgba(11,42,111,.2)}
 }
-.fitur:focus-visible,.btn-ikon:focus-visible,.btn:focus-visible,.menu-baris:focus-visible,
-.btn-selengkapnya:focus-visible,.kartu-surat button:focus-visible{outline:3px solid rgba(255,138,31,.7);outline-offset:2px}
+.fitur:focus-visible,.btn-ikon:focus-visible,.btn:focus-visible,.menu-baris:focus-visible,.btn-selengkapnya:focus-visible,.kartu-surat button:focus-visible{outline:3px solid rgba(255,138,31,.7);outline-offset:2px}
 
 /* ---------- Layar pendek (HP/tablet landscape): login tetap terjangkau ---------- */
 @media (max-height:640px){
@@ -1743,7 +1666,7 @@
       <div class="field">
         <label for="inNik">Kata Sandi (NIK / sandi Admin)</label>
         <i class="fa-solid fa-id-card ikon"></i>
-        <input id="inNik" type="password" placeholder="16 digit NIK atau sandi Admin" maxlength="64" autocapitalize="off" autocomplete="off">
+        <input id="inNik" type="password" placeholder="16 digit NIK atau sandi Admin" minlength="8" maxlength="16" autocapitalize="off" autocomplete="off">
         <button type="button" class="mata" id="tglMata" aria-label="Tampilkan/sembunyikan kata sandi"><i class="fa-solid fa-eye"></i></button>
       </div>
       <button class="btn" id="btnMasuk" type="submit">Masuk</button>
@@ -1920,11 +1843,11 @@
         <input id="aaKetua" type="text" maxlength="80" placeholder="Nama lengkap, boleh dengan gelar" autocomplete="off"></div>
       <div class="mf-field"><label for="aaTelp">No. HP Admin <b>*</b></label>
         <input id="aaTelp" type="tel" inputmode="tel" maxlength="16" placeholder="081234567890" autocomplete="off"></div>
-      <div class="mf-field"><label for="aaSandi">Kata Sandi (minimal 8 karakter) <b>*</b></label>
-        <div class="aa-sandi"><input id="aaSandi" type="password" maxlength="64" autocomplete="new-password" autocapitalize="off">
+      <div class="mf-field"><label for="aaSandi">Kata Sandi (8 sampai 16 karakter) <b>*</b></label>
+        <div class="aa-sandi"><input id="aaSandi" type="password" maxlength="16" autocomplete="new-password" autocapitalize="off">
           <button type="button" class="aa-mata" id="aaMata" aria-label="Tampilkan/sembunyikan kata sandi"><i class="fa-solid fa-eye"></i></button></div></div>
       <div class="mf-field"><label for="aaSandi2">Ulangi Kata Sandi <b>*</b></label>
-        <input id="aaSandi2" type="password" maxlength="64" autocomplete="new-password" autocapitalize="off"></div>
+        <input id="aaSandi2" type="password" maxlength="16" autocomplete="new-password" autocapitalize="off"></div>
       <div class="aa-galat" id="aaGalat" role="alert"></div>
       <div class="modal-aksi" style="grid-template-columns:1fr">
         <button type="submit" class="mb ya" id="aaSimpan">Buat Admin</button>
@@ -2050,7 +1973,6 @@ let daftarKecamatan = [];
    Dipakai pada kop/judul laporan, label RT, dan contoh nomor surat. Nomor surat sendiri dibuat server:
    (no_urut)/(kd_surat)-RT(no_rt)/(kd_kec)(kd_kel)(kd_rw)/bulan romawi/tahun, mis. 001/UND-RT09/070105/XI/2026 */
 let IDENT = null;
-const rtNo   = () => IDENT ? IDENT.no_rt : '';
 const rtTeks = () => IDENT ? 'RT ' + IDENT.no_rt : 'RT';                 // "RT 09"
 const rtTitik = () => IDENT ? 'RT.' + IDENT.no_rt : 'RT';                // "RT.09"
 const rtKel  = () => IDENT ? 'RT ' + IDENT.no_rt + ' ' + IDENT.nama_kel : 'RT';
@@ -2088,6 +2010,8 @@ function aturMenuPengguna(profil){
   if (!profil) pollStatus = null;
   const bm = document.querySelector('[data-buka="mydata"]');       // MyData = data pribadi warga; tidak ada untuk Admin utama
   if (bm) bm.hidden = adminUtama;
+  const ks = document.querySelector('.kartu-surat');                // kartu Surat Pengantar = pengajuan data pribadi warga; tidak ada untuk Admin utama
+  if (ks) ks.style.display = adminUtama ? 'none' : '';
   const bp = $('btnPolling');                                      // Polling di halaman utama: khusus warga (Admin lewat subform Administrasi)
   if (bp) $('btnInfo').after(bp);
   aksesRonda = aksesPenuh;
@@ -2166,7 +2090,7 @@ $('inTelp').addEventListener('input', e => {
   e.target.value = e.target.value.replace(/[^0-9+]/g,'');
   $('pesanLogin').classList.remove('tampil');
 });
-$('inNik').addEventListener('input', () => $('pesanLogin').classList.remove('tampil'));   // kata sandi: bebas (NIK atau sandi Admin)
+$('inNik').addEventListener('input', () => $('pesanLogin').classList.remove('tampil'));   // kata sandi: 8-16 karakter (NIK atau sandi Admin)
 
 function galatLogin(msg){ const p = $('pesanLogin'); p.textContent = msg; p.classList.add('tampil'); }
 
@@ -2176,6 +2100,7 @@ $('formLogin').addEventListener('submit', async (e) => {
   const telp = $('inTelp').value.trim(), sandi = $('inNik').value;
   if (telp.replace(/\D/g,'').length < 9) return galatLogin('Nomor telepon belum lengkap.');
   if (!sandi.trim()) return galatLogin('Kata sandi belum diisi (warga: 16 digit NIK).');
+  if (sandi.length < 8 || sandi.length > 16) return galatLogin('Kata sandi harus 8 sampai 16 karakter.');
 
   const btn = $('btnMasuk'); btn.disabled = true; btn.textContent = 'Memeriksa...';
   try{
@@ -2267,7 +2192,7 @@ $('formAdminAwal').addEventListener('submit', async (e) => {
   if (!rt || parseInt(rt, 10) < 1) return galat('Nomor RT belum diisi.');
   if (ketua.length < 3) return galat('Nama Ketua RT belum diisi.');
   if (telp.replace(/\D/g, '').length < 9) return galat('No. HP belum lengkap.');
-  if (s1.length < 8) return galat('Kata sandi minimal 8 karakter.');
+  if (s1.length < 8 || s1.length > 16) return galat('Kata sandi harus 8 sampai 16 karakter.');
   if (/^\d{16}$/.test(s1.trim())) return galat('Kata sandi tidak boleh berupa 16 digit angka (menyerupai NIK).');
   if (s1 !== s2) return galat('Ulangi kata sandi tidak sama.');
 
@@ -4202,8 +4127,6 @@ function bukaSubform(kunci, dariAdmin){
   setIkonHeader('');
   $('judulSubform').textContent = s.judul;
   const isi = $('isiSubform');
-  isi.classList.remove('penuh');
-
   if (kunci === 'pendataan'){
     renderPendataan(isi);
   } else if (kunci === 'statistik' && statistik){
@@ -4244,7 +4167,7 @@ function bukaSubform(kunci, dariAdmin){
 function kembaliKeAdministrasi(){
   versiSubform++;
   $('judulSubform').textContent = DAFTAR_SUBFORM.korespondensi.judul;
-  const isi = $('isiSubform'); isi.classList.remove('penuh');
+  const isi = $('isiSubform');
   renderKorespondensi(isi);
 }
 function tutupSubform(){
@@ -4252,10 +4175,6 @@ function tutupSubform(){
   arRefreshFn = null;
   $('subform').classList.remove('buka');
   $('subform').setAttribute('aria-hidden','true');
-  /* kosongkan isi subform layar penuh setelah geseran tutup selesai */
-  if ($('isiSubform').classList.contains('penuh')) setTimeout(() => {
-    if (!$('subform').classList.contains('buka')){ $('isiSubform').innerHTML = ''; $('isiSubform').classList.remove('penuh'); }
-  }, 350);
 }
 $('btnKembali').addEventListener('click', kembaliLapisan);
 $('btnLonceng').addEventListener('click', () => bukaSubform('verifikasi'));
@@ -4377,7 +4296,7 @@ function renderKorespondensi(isi){
     ${baris('petugasronda','c15','fa-person-walking','Petugas Ronda','Daftar nama petugas ronda malam','ptr')}
     ${baris('database','c5','fa-database','Database','Basis data keluarga dan pribadi','buka')}
     ${baris('pendataan','c10','fa-clipboard-list','Pendataan','Formulir data keluarga dan pribadi','buka')}
-    ${adminUtama ? baris('admincadangan','c13','fa-user-shield','Admin Cadangan','Pembantu Ketua RT sebagai admin (1 orang)','cad') : ''}
+    ${adminUtama ? baris('admincadangan','c13','fa-user-shield','Admin Cadangan','Staf/operator Ketua RT','cad') : ''}
   </div>`;
 }
 document.addEventListener('click', (e) => {
@@ -4403,6 +4322,17 @@ const EKSTENSI_ARSIP = { 'application/pdf':'pdf', 'image/png':'png', 'image/jpeg
 const BATAS_ARSIP = 5 * 1024 * 1024;
 
 const tgl10 = (v) => v ? String(v).slice(0,10) : '';
+/* Tanggal Surat pada Surat Keluar dan Undangan.
+   true  = Admin mengisi tanggal sendiri (input manual menggantikan timestamp otomatis; bulan dan tahun nomor surat mengikuti tanggal ini,
+           berguna untuk menginput surat lama).
+   false = isian tanggal disembunyikan: surat baru memakai tanggal hari ini, surat yang diubah tetap memakai tanggalnya semula. */
+const TGL_MANUAL_KORESPONDENSI = true;
+const fldTglSurat = (it, dis, edit) => {
+  const v = tgl10(it.tgl_surat) || hariIni();
+  if (TGL_MANUAL_KORESPONDENSI) return fld('Tanggal Surat', `<input name="tgl_surat" type="date" value="${esc(v)}" ${dis}>`, 1);
+  return ((dis || edit) && it.tgl_surat ? fld('Tanggal Surat', `<input type="date" value="${esc(v)}" disabled>`) : '') +
+         `<input type="hidden" name="tgl_surat" value="${esc(v)}">`;
+};
 const jam5  = (v) => v ? String(v).slice(0,5) : '';
 
 function formSuratMasuk(){
@@ -4475,7 +4405,7 @@ function formSuratKeluar(){
       it = it || {};
       const kunciP = edit ? 'disabled' : dis;               // saat Edit: perihal tetap (kode nomor mengikuti perihal)
       return ((dis || edit) ? fld('Nomor Surat', `<input type="text" value="${esc(it.nomor_surat || '-')}" disabled>`) : '') +
-      fld('Tanggal Surat', `<input name="tgl_surat" type="date" value="${esc(tgl10(it.tgl_surat) || hariIni())}" ${dis}>`, 1) +
+      fldTglSurat(it, dis, edit) +
       fld('Perihal', `<select name="perihal" ${kunciP}><option value="">— Pilih perihal —</option>` +
         (it.perihal && !PERIHAL_KELUAR.includes(it.perihal) ? `<option selected>${esc(it.perihal)}</option>` : '') +   // data lama (mis. Rekomendasi) tetap terbaca
         PERIHAL_KELUAR.map(p => `<option ${p === it.perihal ? 'selected' : ''}>${p}</option>`).join('') + '</select>', 1) +
@@ -4510,7 +4440,7 @@ function formUndangan(){
     isi:(it, dis, edit) => {
       it = it || {};
       return ((dis || edit) ? fld('Nomor Surat', `<input type="text" value="${esc(it.nomor_surat || '-')}" disabled>`) : '') +
-      fld('Tanggal Surat', `<input name="tgl_surat" type="date" value="${esc(tgl10(it.tgl_surat) || hariIni())}" ${dis}>`, 1) +
+      fldTglSurat(it, dis, edit) +
       fld('Perihal', `<input name="perihal" type="text" maxlength="200" placeholder="Contoh: Rapat Pengurus RT" value="${esc(it.perihal || '')}" ${dis}>`, 1) +
       fld('Kepada', `<textarea name="kepada" maxlength="500" placeholder="Contoh: Yth. Bapak/Ibu Warga ${rtTitik()}&#10;di Tempat" ${dis}>${esc(it.kepada || '')}</textarea>`, 1) +
       '<div class="mf-dua">' +
@@ -4617,7 +4547,6 @@ async function formNotula(){
 const LAP = {
   judul:'Laporan Kondusifitas Wilayah', judul2:'',          // kop diisi dari identitas RT (LAP_ISI_IDENT) setelah dimuat
   qr:'Ketua RT', nama:'', jabatan:'Ketua RT',     // nama Ketua RT diisi dari identitas RT (LAP_ISI_IDENT)
-  arsip:'Arsip: Medulu © 2026',
   qrMm:17.2,        // ukuran QR (setara 65 px)
   jarakMm:6.4       // jarak QR dari tabel (setara 24 px)
 };
@@ -4863,8 +4792,10 @@ async function lapBuatPdf(awal, akhir, rows, nomor, dicetak){
     rowPageBreak:'avoid'
   });
 
-  // Blok tanda tangan: QR di kiri, keterangan di kanan, diletakkan di tengah halaman
-  const baris = [[dicetak, 'normal', 8], [LAP.nama, 'bold', 9.5], [LAP.jabatan, 'normal', 8], [LAP.arsip, 'normal', 6]];
+  // Blok tanda tangan: QR di kiri; di kanan dari atas: tanggal, jabatan, "Tanda tangan elektronik" (miring, kecil),
+  // lalu nama Ketua RT yang diturunkan hingga sejajar dasar QR
+  const TTE = 'Tanda tangan elektronik';
+  const baris = [[dicetak, 'normal', 8], [LAP.jabatan, 'normal', 8], [TTE, 'italic', 6.5], [LAP.nama, 'bold', 9.5]];
   let lebar = 0;
   baris.forEach(b => { doc.setFont('helvetica', b[1]); doc.setFontSize(b[2]); lebar = Math.max(lebar, doc.getTextWidth(bersih(b[0]))); });
   const qrS = LAP.qrMm, gap = 3.2, x0 = (W - (qrS + gap + lebar)) / 2;
@@ -4876,10 +4807,10 @@ async function lapBuatPdf(awal, akhir, rows, nomor, dicetak){
   doc.setFillColor(0, 0, 0);
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) doc.rect(x0 + c * sel, yb + r * sel, sel + 0.03, sel + 0.03, 'F');
 
-  const tg = 4.4, ty = yb + (qrS - tg * baris.length) / 2 + 3.2;
+  const xt = x0 + qrS + gap, yt = [yb + 3.2, yb + 7.6, yb + 11.4, yb + qrS - 0.6];
   baris.forEach((b, i) => {
     doc.setFont('helvetica', b[1]); doc.setFontSize(b[2]); doc.setTextColor(0);
-    doc.text(bersih(b[0]), x0 + qrS + gap, ty + i * tg);
+    doc.text(bersih(b[0]), xt, yt[i]);
   });
   return doc.output('blob');
 }
@@ -5831,12 +5762,15 @@ const WARNA_POLL = { 'Setuju':'#22c55e', 'Tidak Setuju':'#ef4444', 'Abstain':'#9
 function hasilPolling(suara, judul){
   const a = Number(suara && suara['Setuju'] || 0), t = Number(suara && suara['Tidak Setuju'] || 0), b = Number(suara && suara['Abstain'] || 0);
   const total = a + t + b, dasar = total || 1;
+  const kk = Number(statistik && statistik.jumlah_kk || 0);                 // partisipasi dihitung dari jumlah KK
+  const partisipasi = kk ? 'Partisipasi: ' + fmt(total) + ' (' + (total / kk * 100).toFixed(1).replace('.', ',') + '%) dari ' + fmt(kk) + ' KK'
+                         : 'Partisipasi: ' + fmt(total) + ' KK';
   const p1 = a / dasar * 100, p2 = (a + t) / dasar * 100;
   const pie = total ? `conic-gradient(#22c55e 0% ${p1}%, #ef4444 ${p1}% ${p2}%, #94a3b8 ${p2}% 100%)` : '#e2e8f0';
   const baris = (label, n) => `<div class="poll-leg"><span><i class="poll-dot" style="background:${WARNA_POLL[label]}"></i>${label}</span><b>${fmt(n)} (${(total ? n / total * 100 : 0).toFixed(1).replace('.', ',')}%)</b></div>`;
-  return `${judul ? `<div class="poll-hasil-judul">${judul}</div>` : ''}<div class="poll-pie-wrap"><div class="poll-pie" style="background:${pie}"></div></div>
-    <div class="poll-legend">${baris('Setuju', a)}${baris('Tidak Setuju', t)}${baris('Abstain', b)}</div>
-    <div class="poll-total">Total pendapat (per keluarga): ${fmt(total)}</div>`;
+  return `${judul ? `<div class="poll-hasil-judul">${judul}</div>` : ''}<div class="poll-isi"><div class="poll-pie-wrap"><div class="poll-pie" style="background:${pie}"></div></div>
+    <div class="poll-legend">${baris('Setuju', a)}${baris('Tidak Setuju', t)}${baris('Abstain', b)}</div></div>
+    <div class="poll-total">${partisipasi}</div>`;
 }
 
 /* ---------- Isi subform Polling ---------- */
@@ -6825,7 +6759,7 @@ const tautanArsip = (u) => linkAman(u)
   ? `<a class="md-link" href="${esc(linkAman(u))}" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> Arsip Surat (PDF)</a>` : '';
 
 /* URL web app Apps Script "Persetujuan.gs" (Deploy > Web app > salin URL berakhiran /exec) */
-const URL_PERSETUJUAN = 'https://script.google.com/macros/s/AKfycbzKoqM7txyZ39C-SqgZrYR1j9GKMvzMoW0Lhlrfa02bAhRHrtGuhg9MOqJxXbP_MORMtg/exec';
+const URL_PERSETUJUAN = 'https://script.google.com/macros/s/AKfycbw6YkF7nqexpXBLspxbNiXS4hqyLgmv1rlMKjVDwQRAUsHt2SZorQyDmIIs8wKA963k7Q/exec';
 
 /* ----- Lonceng: badge + penyegaran otomatis ----- */
 function aturLonceng(data){
