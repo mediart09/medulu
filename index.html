@@ -1075,6 +1075,8 @@
   .pr-lightbox .pr-lb-tutup{position:absolute;top:calc(16px + env(safe-area-inset-top));right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;border:0;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   /* Profil RT: tombol aksi admin, program kerja, editor modal */
   .pr .pr-aksi{display:flex;justify-content:flex-end;margin:8px 0 4px}
+  .pr .pr-ket-webp{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:#eef3fb;color:var(--biru-tua);font-size:.74rem;line-height:1.5}
+  .pr .pr-ket-webp i{margin-right:4px}
   .pr .pr-btn{border:0;border-radius:10px;padding:8px 14px;font:inherit;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1558c9,#2f86ec);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
   .pr .pr-btn.edit{background:#eef3fb;color:var(--pr-blue);border:1px solid #cfe0fb}
   .pr .pr-btn:disabled{opacity:.6;cursor:wait}
@@ -3314,7 +3316,7 @@ function renderArsipAset(isi){
 /* Data disimpan di Supabase (tabel profil_rt, lihat 14_profil_rt.sql). Tombol ubah data hanya untuk Admin (aksesPenuh);
    warga biasa hanya melihat hasil. Pengecekan Admin juga dilakukan di sisi server. */
 const BUCKET_PROFIL = 'profil_rt';
-const MIME_PETA = { 'image/jpeg':'jpg', 'image/png':'png', 'image/webp':'webp' };
+const MIME_PETA = { 'image/webp':'webp' };   // gambar Batas Wilayah hanya WebP (ukuran berkas kecil)
 let prData = {}, prBuka = 'peta';
 
 function prMasaKerja(){
@@ -3520,7 +3522,7 @@ function prBukaEditorProgram(){
 async function prUnggahPeta(file, tombol){
   if (!file) return;
   const ext = MIME_PETA[file.type];
-  if (!ext) return toast('Gambar harus berformat JPG, PNG, atau WebP.');
+  if (!ext || !/\.webp$/i.test(file.name || '')) return toast('Gambar harus berformat WebP. Convert gambar Anda ke WebP terlebih dahulu.');
   if (file.size > BATAS_ARSIP) return toast('Ukuran gambar maksimal 5 MB.');
   const labelAwal = tombol.innerHTML; tombol.disabled = true; tombol.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
   const lama = prData.peta && prData.peta.path, path = 'peta/' + crypto.randomUUID() + '.' + ext;
@@ -3584,7 +3586,8 @@ async function renderProfilRT(isi, pertahankan){
     ${sek('peta', 'Batas Wilayah',
       (admin ? `<div class="pr-aksi"><button type="button" class="pr-btn ${urlPeta ? 'edit' : ''}" data-prbtn="peta">
         <i class="fa-solid ${urlPeta ? 'fa-pen-to-square' : 'fa-upload'}"></i> ${urlPeta ? 'Edit' : 'Unggah Gambar'}</button>
-        <input type="file" id="prFilePeta" accept="image/jpeg,image/png,image/webp" hidden></div>` : '') +
+        <input type="file" id="prFilePeta" accept="image/webp,.webp" hidden></div>
+        <div class="pr-ket-webp"><i class="fa-solid fa-circle-info"></i> Gambar yang diunggah adalah tipe webP. Silakan convert tipe gambar anda ke webP secara online, download hasil convert dan unggah disini.</div>` : '') +
       (urlPeta ? `<div class="pr-map" data-prpeta><img src="${esc(urlPeta)}" alt="Peta Batas Wilayah RT"><div class="pr-map-badge"><i class="fa-solid fa-expand"></i> Perbesar Peta</div></div>`
                : prKosong('Belum ada gambar batas wilayah.')))}
     ${sek('bangunan', 'Keadaan Bangunan', prHtmlBangunan())}
