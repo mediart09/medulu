@@ -830,7 +830,10 @@
   .mb:focus-visible{outline:3px solid rgba(21,88,201,.35);outline-offset:2px}
   /* Modal Buat Admin (muncul di halaman login selama belum ada admin; tidak bisa ditutup) */
   #modalAdminAwal{z-index:90}
-  #modalAdminAwal .modal-kotak{max-width:calc(360px * var(--z));text-align:left}
+  #modalAdminAwal .modal-kotak{max-width:calc(360px * var(--z));text-align:left;max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain}
+  #modalAdminAwal .aa-bagian{margin:12px 0 8px;padding-top:10px;border-top:1px solid #e6ecf5;font-size:.72rem;font-weight:600;color:var(--biru-tua);letter-spacing:.02em}
+  #modalAdminAwal .aa-bagian:first-of-type{margin-top:0;padding-top:0;border-top:0}
+  #modalAdminAwal .aa-kode{margin:-4px 0 11px;padding:7px 10px;border-radius:10px;background:#eef3fb;color:var(--biru-tua);font-size:.72rem;line-height:1.45;word-break:break-all}
   #modalAdminAwal .modal-kotak>p{text-align:center;margin-bottom:14px}
   #modalAdminAwal h3{text-align:center}
   #modalAdminAwal .mf-field{margin-bottom:11px}
@@ -1804,7 +1807,7 @@
       <div class="bday-judul" id="bdayJudul">Selamat Ulang Tahun!</div>
       <div class="bday-nama" id="bdayNama"></div>
       <div class="bday-usia" id="bdayUsia" style="display:none"></div>
-      <div class="bday-pesan">Semoga panjang umur, sehat selalu, dan dilimpahi kebahagiaan serta kesuksesan.<br>Salam hangat dari seluruh warga RT 09 Bonggoeya. 🎉</div>
+      <div class="bday-pesan">Semoga panjang umur, sehat selalu, dan dilimpahi kebahagiaan serta kesuksesan.<br>Salam hangat dari seluruh warga <span data-id="rtkel">RT</span>. 🎉</div>
       <button class="bday-btn" type="button" id="bdayTutup"><i class="fa-solid fa-gift"></i> Terima Kasih</button>
     </div>
   </div>
@@ -1834,7 +1837,20 @@
     <form class="modal-kotak" id="formAdminAwal" role="dialog" aria-modal="true" aria-labelledby="aaJudul" autocomplete="off" novalidate>
       <div class="modal-ikon"><i class="fa-solid fa-user-shield"></i></div>
       <h3 id="aaJudul">Buat Admin RT</h3>
-      <p>Aplikasi ini belum memiliki admin. Tetapkan admin utama (Ketua RT) dengan No. HP sebagai nama pengguna dan sebuah kata sandi.</p>
+      <p>Aplikasi ini belum memiliki admin. Isi wilayah RT, lalu tetapkan admin utama (Ketua RT) dengan No. HP sebagai nama pengguna dan sebuah kata sandi.</p>
+      <div class="aa-bagian">Wilayah RT</div>
+      <div class="mf-field"><label for="aaKec">Kecamatan <b>*</b></label>
+        <select id="aaKec"><option value="">-- Pilih Kecamatan --</option></select></div>
+      <div class="mf-field"><label for="aaKel">Kelurahan <b>*</b></label>
+        <input id="aaKel" type="text" maxlength="60" placeholder="Contoh: Bonggoeya" autocomplete="off"></div>
+      <div class="mf-dua">
+        <div class="mf-field"><label for="aaRw">RW <b>*</b></label>
+          <input id="aaRw" type="text" inputmode="numeric" maxlength="3" placeholder="05" autocomplete="off"></div>
+        <div class="mf-field"><label for="aaRt">RT <b>*</b></label>
+          <input id="aaRt" type="text" inputmode="numeric" maxlength="3" placeholder="09" autocomplete="off"></div>
+      </div>
+      <div class="aa-kode" id="aaKode" style="display:none"></div>
+      <div class="aa-bagian">Akun Admin</div>
       <div class="mf-field"><label for="aaTelp">No. HP Admin <b>*</b></label>
         <input id="aaTelp" type="tel" inputmode="tel" maxlength="16" placeholder="081234567890" autocomplete="off"></div>
       <div class="mf-field"><label for="aaSandi">Kata Sandi (minimal 8 karakter) <b>*</b></label>
@@ -1846,7 +1862,7 @@
       <div class="modal-aksi" style="grid-template-columns:1fr">
         <button type="submit" class="mb ya" id="aaSimpan">Buat Admin</button>
       </div>
-      <div class="aa-catatan">Catat kata sandi ini dengan aman. Setelah admin dibuat, jendela ini tidak muncul lagi.</div>
+      <div class="aa-catatan">Catat kata sandi ini dengan aman. Wilayah RT dipakai pada nomor surat dan kop. Setelah admin dibuat, jendela ini tidak muncul lagi.</div>
     </form>
   </div>
   <!-- Modal form (dipakai Korespondensi) -->
@@ -1902,8 +1918,8 @@
 /* =====================================================================
    KONFIGURASI SUPABASE — TEMPEL MILIK ANDA DI DUA BARIS DI BAWAH INI
    (Supabase Dashboard > Project Settings > API)
-     SUPABASE_URL      : "https://celdglnkprcatpcwkohg.supabase.co"
-     SUPABASE_ANON_KEY : "sb_publishable_D6k47FTgymF-bKYoHY9U_A_EXBiDjGQ"
+     SUPABASE_URL      : "https://celdglnkprcatpcwkohg.supabase.co"            contoh: https://abcdefgh.supabase.co
+     SUPABASE_ANON_KEY : "sb_publishable_D6k47FTgymF-bKYoHY9U_A_EXBiDjGQ"  (BUKAN service_role / secret key!)
    Selama kosong, aplikasi menampilkan pemberitahuan di halaman login.
    ===================================================================== */
 const SUPABASE_URL = '';        // <-- tempel Project URL di antara tanda kutip
@@ -1959,6 +1975,31 @@ function namaTanpaGelar(nama){
    atau Admin Cadangan (login No. HP + NIK). Tidak ada nama admin yang tertulis di kode ini. */
 const MENU_KHUSUS = ['korespondensi', 'database', 'inventaris', 'laporan', 'pendataan'];
 let aksesPenuh = false, aksesRonda = false, adminUtama = false, adaAdmin = null;
+const ROMAWI = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+let daftarKecamatan = [];
+
+/* ---------- Identitas RT (kecamatan, kelurahan, RW, RT) ----------
+   Diisi saat Admin dibuat (tabel identitas_rt) dan dibaca lewat get_identitas_rt.
+   Dipakai pada kop/judul laporan, label RT, dan contoh nomor surat. Nomor surat sendiri dibuat server:
+   (no_urut)/(kd_surat)-RT(no_rt)/(kd_kec)(kd_kel)(kd_rw)/bulan romawi/tahun, mis. 001/UND-RT09/070105/XI/2026 */
+let IDENT = null;
+const rtNo   = () => IDENT ? IDENT.no_rt : '';
+const rtTeks = () => IDENT ? 'RT ' + IDENT.no_rt : 'RT';                 // "RT 09"
+const rtTitik = () => IDENT ? 'RT.' + IDENT.no_rt : 'RT';                // "RT.09"
+const rtKel  = () => IDENT ? 'RT ' + IDENT.no_rt + ' ' + IDENT.nama_kel : 'RT';
+function terapkanIdentitas(){
+  document.querySelectorAll('[data-id="rt"]').forEach(e => { e.textContent = rtTeks(); });
+  document.querySelectorAll('[data-id="rtkel"]').forEach(e => { e.textContent = rtKel(); });
+  LAP_ISI_IDENT();
+}
+async function muatIdentitasRt(){
+  if (!KONFIG_SIAP) return;
+  try{
+    const { data, error } = await db.rpc('get_identitas_rt');
+    if (error) throw error;
+    if (data && data.ok){ IDENT = data; terapkanIdentitas(); }
+  }catch(e){ console.error(e); }
+}
 /* Petugas ronda ditentukan di server lewat daftar NIK (Administrasi > Petugas Ronda); Admin selalu punya akses */
 function aturRonda(){
   const b = $('btnRonda'); if (!b) return;
@@ -2030,6 +2071,7 @@ setInterval(perbaruiSapaan, 60 * 1000);
 /* Splash: tampil sebentar, geser ke kiri, memperlihatkan Login (atau Utama bila sesi masih berlaku) */
 async function mulai(){
   tokenSesi = ambilToken();
+  muatIdentitasRt();                         // identitas wilayah RT (kop laporan, label RT)
   let profil = null;
   const tunggu = new Promise(r => setTimeout(r, DURASI_SPLASH));
 
@@ -2096,6 +2138,7 @@ async function periksaAdminAwal(){
     const { data, error } = await db.rpc('status_admin');
     if (error) throw error;
     adaAdmin = !!(data && data.ada);
+    daftarKecamatan = (data && data.kecamatan) || [];
     if (!adaAdmin) bukaModalAdminAwal();
   }catch(e){
     console.error(e);
@@ -2106,13 +2149,31 @@ async function periksaAdminAwal(){
     /* galat jaringan: biarkan formulir login tampil; pemeriksaan diulang saat halaman login tampil lagi */
   }
 }
+function isiKecamatanAdminAwal(){
+  const sel = $('aaKec'), pilih = sel.value;
+  sel.innerHTML = '<option value="">-- Pilih Kecamatan --</option>' +
+    daftarKecamatan.map(k => `<option value="${esc(k.kode)}">${esc(k.nama)} (${esc(k.kode)})</option>`).join('');
+  sel.value = pilih;
+}
+/* Pratinjau kode wilayah pada nomor surat: (kd_kec)(kd_kel)(kd_rw) -> mis. 070105; kd_kel = urutan input (01) */
+function perbaruiKodeAdminAwal(){
+  const kec = $('aaKec').value, rw = $('aaRw').value.replace(/\D/g, ''), rt = $('aaRt').value.replace(/\D/g, '');
+  const k = $('aaKode');
+  if (!kec || !$('aaKel').value.trim() || !rw || !rt){ k.style.display = 'none'; return; }
+  const dua = (x) => String(parseInt(x, 10) || 0).padStart(2, '0');
+  k.style.display = '';
+  k.textContent = 'Contoh nomor surat: 001/UND-RT' + dua(rt) + '/' + kec + '01' + dua(rw) + '/' + ROMAWI[new Date().getMonth()] + '/' + new Date().getFullYear();
+}
+['aaKec','aaKel','aaRw','aaRt'].forEach(id => $(id).addEventListener('input', perbaruiKodeAdminAwal));
+['aaRw','aaRt'].forEach(id => $(id).addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, ''); }));
 function bukaModalAdminAwal(){
-  ['aaTelp','aaSandi','aaSandi2'].forEach(id => { $(id).value = ''; });
+  ['aaKel','aaRw','aaRt','aaTelp','aaSandi','aaSandi2'].forEach(id => { $(id).value = ''; });
+  isiKecamatanAdminAwal(); $('aaKec').value = ''; $('aaKode').style.display = 'none';
   $('aaSandi').type = 'password'; $('aaMata').firstElementChild.className = 'fa-solid fa-eye';
   $('aaGalat').classList.remove('tampil');
   $('login').inert = true;                                         // fokus tidak bisa keluar ke formulir login di belakang
   const m = $('modalAdminAwal'); m.classList.add('tampil'); m.setAttribute('aria-hidden', 'false');
-  setTimeout(() => $('aaTelp').focus(), 80);
+  setTimeout(() => $('aaKec').focus(), 80);
 }
 function tutupModalAdminAwal(){
   const m = $('modalAdminAwal'); m.classList.remove('tampil'); m.setAttribute('aria-hidden', 'true');
@@ -2129,7 +2190,13 @@ $('formAdminAwal').addEventListener('submit', async (e) => {
   e.preventDefault();
   const galat = (t) => { const g = $('aaGalat'); g.textContent = t; g.classList.add('tampil'); };
   $('aaGalat').classList.remove('tampil');
+  const kec = $('aaKec').value, kel = $('aaKel').value.trim().replace(/\s+/g, ' ');
+  const rw = $('aaRw').value.replace(/\D/g, ''), rt = $('aaRt').value.replace(/\D/g, '');
   const telp = $('aaTelp').value.trim(), s1 = $('aaSandi').value, s2 = $('aaSandi2').value;
+  if (!kec) return galat('Kecamatan belum dipilih.');
+  if (kel.length < 3) return galat('Kelurahan belum diisi.');
+  if (!rw || parseInt(rw, 10) < 1) return galat('Nomor RW belum diisi.');
+  if (!rt || parseInt(rt, 10) < 1) return galat('Nomor RT belum diisi.');
   if (telp.replace(/\D/g, '').length < 9) return galat('No. HP belum lengkap.');
   if (s1.length < 8) return galat('Kata sandi minimal 8 karakter.');
   if (/^\d{16}$/.test(s1.trim())) return galat('Kata sandi tidak boleh berupa 16 digit angka (menyerupai NIK).');
@@ -2137,14 +2204,15 @@ $('formAdminAwal').addEventListener('submit', async (e) => {
 
   const btn = $('aaSimpan'); btn.disabled = true; btn.textContent = 'Menyimpan...';
   try{
-    const { data, error } = await db.rpc('buat_admin_awal', { p_telp: telp, p_sandi: s1 });
+    const { data, error } = await db.rpc('buat_admin_awal', { p_kd_kec: kec, p_kelurahan: kel, p_no_rw: rw, p_no_rt: rt, p_telp: telp, p_sandi: s1 });
     if (error) throw error;
     if (!data || !data.ok){
-      if (data && data.ada){ adaAdmin = true; tutupModalAdminAwal(); toast('Admin sudah ditetapkan. Silakan masuk.'); return; }
+      if (data && data.ada){ adaAdmin = true; tutupModalAdminAwal(); muatIdentitasRt(); toast('Admin sudah ditetapkan. Silakan masuk.'); return; }
       return galat((data && data.pesan) || 'Gagal membuat admin.');
     }
     adaAdmin = true;
     tutupModalAdminAwal();
+    muatIdentitasRt();
     $('inTelp').value = telp; $('inNik').value = '';
     toast('Admin dibuat. Silakan masuk dengan No. HP dan kata sandi tadi.');
     $('inNik').focus();
@@ -2367,7 +2435,7 @@ function renderProgramKerja(isi){
         <!-- Visi Card -->
         <div class="visi-card">
           <div class="visi-header">
-            <i class="fa-solid fa-bullseye"></i> Visi Utama RT 09
+            <i class="fa-solid fa-bullseye"></i> Visi Utama <span data-id="rt">RT</span>
           </div>
           <div class="visi-text">
             “Terwujudnya RT yang unggul dalam pelayanan, nyaman, berkelanjutan, dan tangguh terhadap tantangan lingkungan.”
@@ -3847,7 +3915,7 @@ function formSuratMasuk(){
 }
 
 /* Perihal surat keluar -> kode nomor (dihitung di server): HIM, SPY, PMB, PEN, SED, SP1, SP2, SPK, LL
-   Format nomor: 001/HIM-RT09/XI/2026 */
+   Format nomor (dibuat server): 001/HIM-RT09/070105/XI/2026 = (no_urut)/(kd_surat)-RT(no_rt)/(kd_kec)(kd_kel)(kd_rw)/bulan romawi/tahun */
 const PERIHAL_KELUAR = ['Himbauan','Penyampaian','Pemberitahuan','Pengumuman','Edaran',
                         'Peringatan 1','Peringatan 2','Pengangkatan','Lain-lain'];
 function formSuratKeluar(){
@@ -3861,7 +3929,7 @@ function formSuratKeluar(){
       fld('Perihal', `<select name="perihal" ${kunciP}><option value="">— Pilih perihal —</option>` +
         (it.perihal && !PERIHAL_KELUAR.includes(it.perihal) ? `<option selected>${esc(it.perihal)}</option>` : '') +   // data lama (mis. Rekomendasi) tetap terbaca
         PERIHAL_KELUAR.map(p => `<option ${p === it.perihal ? 'selected' : ''}>${p}</option>`).join('') + '</select>', 1) +
-      fld('Kepada', `<textarea name="kepada" maxlength="500" placeholder="Contoh: Yth. Bapak/Ibu Warga RT.09&#10;di Tempat" ${dis}>${esc(it.kepada || '')}</textarea>`, 1) +
+      fld('Kepada', `<textarea name="kepada" maxlength="500" placeholder="Contoh: Yth. Bapak/Ibu Warga ${rtTitik()}&#10;di Tempat" ${dis}>${esc(it.kepada || '')}</textarea>`, 1) +
       fld('Pembuka', `<textarea name="pembuka" placeholder="Paragraf pembuka" ${dis}>${esc(it.pembuka || '')}</textarea>`) +
       fld('Penutup', `<textarea name="penutup" placeholder="Paragraf penutup" ${dis}>${esc(it.penutup || '')}</textarea>`) +
       fld('Tembusan', `<textarea name="tembusan" placeholder="Contoh: 1. Ketua RW&#10;2. Arsip" ${dis}>${esc(it.tembusan || '')}</textarea>`);
@@ -3894,7 +3962,7 @@ function formUndangan(){
       return ((dis || edit) ? fld('Nomor Surat', `<input type="text" value="${esc(it.nomor_surat || '-')}" disabled>`) : '') +
       fld('Tanggal Surat', `<input name="tgl_surat" type="date" value="${esc(tgl10(it.tgl_surat) || hariIni())}" ${dis}>`, 1) +
       fld('Perihal', `<input name="perihal" type="text" maxlength="200" placeholder="Contoh: Rapat Pengurus RT" value="${esc(it.perihal || '')}" ${dis}>`, 1) +
-      fld('Kepada', `<textarea name="kepada" maxlength="500" placeholder="Contoh: Yth. Bapak/Ibu Warga RT.09&#10;di Tempat" ${dis}>${esc(it.kepada || '')}</textarea>`, 1) +
+      fld('Kepada', `<textarea name="kepada" maxlength="500" placeholder="Contoh: Yth. Bapak/Ibu Warga ${rtTitik()}&#10;di Tempat" ${dis}>${esc(it.kepada || '')}</textarea>`, 1) +
       '<div class="mf-dua">' +
         fld('Tanggal', `<input name="tgl_acara" type="date" value="${esc(tgl10(it.tgl_acara))}" ${dis}>`, 1) +
         fld('Jam', `<input name="jam_acara" type="time" value="${esc(jam5(it.jam_acara))}" ${dis}>`, 1) +
@@ -3997,19 +4065,28 @@ async function formNotula(){
      (tampil di Info Arsip & Aset sebagai Surat Keluar)
    ===================================================================== */
 const LAP = {
-  judul:'Laporan Kondusifitas Wilayah RT.09 RW.05', judul2:'Kelurahan Bonggoeya Kecamatan Wua-Wua',
-  qr:'Poerwanto | Ketua RT.09', nama:'Poerwanto, S.Pd, M.Pd', jabatan:'Ketua RT.09',
+  judul:'Laporan Kondusifitas Wilayah', judul2:'',          // kop diisi dari identitas RT (LAP_ISI_IDENT) setelah dimuat
+  qr:'Ketua RT', nama:'Poerwanto, S.Pd, M.Pd', jabatan:'Ketua RT',
   arsip:'Arsip: Medulu © 2026',
   qrMm:17.2,        // ukuran QR (setara 65 px)
   jarakMm:6.4       // jarak QR dari tabel (setara 24 px)
 };
+/* Kop laporan mengikuti identitas wilayah RT: "Laporan Kondusifitas Wilayah RT.09 RW.05" /
+   "Kelurahan Bonggoeya Kecamatan Wua-Wua". Nama Ketua RT di atas masih tertulis tetap (belum diubah). */
+function LAP_ISI_IDENT(){
+  if (!IDENT) return;
+  LAP.judul  = 'Laporan Kondusifitas Wilayah RT.' + IDENT.no_rt + ' RW.' + IDENT.no_rw;
+  LAP.judul2 = 'Kelurahan ' + IDENT.nama_kel + ' Kecamatan ' + IDENT.nama_kec;
+  LAP.jabatan = 'Ketua RT.' + IDENT.no_rt;
+  LAP.qr = LAP.nama.split(',')[0] + ' | Ketua RT.' + IDENT.no_rt;
+}
 const LAP_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const lapPecah = (iso) => String(iso).slice(0, 10).split('-').map(Number);
 const lapTglPanjang = (iso) => { const [y, m, d] = lapPecah(iso); return d + ' ' + LAP_BULAN[m - 1] + ' ' + y; };
 const lapTglPendek = (iso) => { const [y, m, d] = lapPecah(iso); return String(d).padStart(2, '0') + '/' + String(m).padStart(2, '0') + '/' + y; };
 const lapNamaBulan = (ym) => { if (!ym) return ''; const [y, m] = lapPecah(ym + '-01'); return LAP_BULAN[m - 1] + ' ' + y; };
 // Nama file PDF mengikuti perihal: "Laporan Kondusifitas Wilayah RT.09 (01-10-2026 s.d. 31-10-2026).pdf"
-const lapNamaFile = (awal, akhir) => 'Laporan Kondusifitas Wilayah RT.09 (' + lapTglPendek(awal).replace(/\//g, '-') +
+const lapNamaFile = (awal, akhir) => 'Laporan Kondusifitas Wilayah ' + rtTitik() + ' (' + lapTglPendek(awal).replace(/\//g, '-') +
   ' s.d. ' + lapTglPendek(akhir).replace(/\//g, '-') + ').pdf';
 const LAP_SPIN = '<i class="fa-solid fa-spinner fa-spin"></i> ';
 function lapInfo(jenis, html){
@@ -6087,7 +6164,7 @@ function isianSurat(jenis){
              fs('Tanggal Pernyataan', 'fa-calendar-check', inp('tgl_pernyataan','date')) +
              fs('Tanggal Kuasa', 'fa-calendar-day', inp('tgl_kuasa','date'));
     case 'sk_pindah_domisili':
-      return fs('Pilihan Pindah', 'fa-truck-ramp-box', '<select name="opsi_pindah" required><option value="">-- Pilih Status Pindah --</option><option value="Masuk">Masuk (Datang ke RT 09)</option><option value="Keluar">Keluar (Pindah dari RT 09)</option></select>') +
+      return fs('Pilihan Pindah', 'fa-truck-ramp-box', '<select name="opsi_pindah" required><option value="">-- Pilih Status Pindah --</option><option value="Masuk">Masuk (Datang ke ' + rtTeks() + ')</option><option value="Keluar">Keluar (Pindah dari ' + rtTeks() + ')</option></select>') +
              '<div id="pindahAlamat"></div>';
     default: return '';
   }
