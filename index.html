@@ -646,9 +646,10 @@
   .poll-total{text-align:center;font-size:.72rem;color:#64748b;margin-top:10px}
   /* PC/tablet: diagram sebaris dengan label (item rata kiri,nilai rata kanan) */
   @media (min-width:768px){
-    .poll-isi{display:flex;align-items:center;gap:28px}
+    .poll-isi{display:flex;align-items:center;justify-content:center;gap:28px}
     .poll-isi .poll-pie-wrap{flex:none;margin:0}
-    .poll-isi .poll-legend{flex:1;min-width:0}
+    .poll-isi .poll-legend{flex:none}
+    .poll-isi .poll-leg{gap:28px}                 /* jarak label ke nilai sama dengan jarak diagram ke label */
   }
   .poll-konfirm-teks{font-size:.92rem;font-weight:700;color:#0f172a;margin:14px 0 22px;line-height:1.55}
   .poll-konfirm-teks small{display:block;font-weight:400;font-size:.7rem;color:#64748b;margin-top:6px}
