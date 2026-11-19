@@ -1915,15 +1915,9 @@
 <div id="toast"></div>
 
 <script>
-/* =====================================================================
-   KONFIGURASI SUPABASE — TEMPEL MILIK ANDA DI DUA BARIS DI BAWAH INI
-   (Supabase Dashboard > Project Settings > API)
-     SUPABASE_URL      : "https://celdglnkprcatpcwkohg.supabase.co"            contoh: https://abcdefgh.supabase.co
-     SUPABASE_ANON_KEY : "sb_publishable_D6k47FTgymF-bKYoHY9U_A_EXBiDjGQ"  (BUKAN service_role / secret key!)
-   Selama kosong, aplikasi menampilkan pemberitahuan di halaman login.
-   ===================================================================== */
-const SUPABASE_URL = '';        // <-- tempel Project URL di antara tanda kutip
-const SUPABASE_ANON_KEY = '';   // <-- tempel anon / publishable key di antara tanda kutip
+
+const SUPABASE_URL = 'https://celdglnkprcatpcwkohg.supabase.co';        // <-- tempel Project URL di antara tanda kutip
+const SUPABASE_ANON_KEY = 'sb_publishable_D6k47FTgymF-bKYoHY9U_A_EXBiDjGQ';   // <-- tempel anon / publishable key di antara tanda kutip
 
 const KONFIG_SIAP = !!(SUPABASE_URL.trim() && SUPABASE_ANON_KEY.trim());
 const db = KONFIG_SIAP ? window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim()) : null;
