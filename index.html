@@ -1916,6 +1916,8 @@
       </div>
       <div class="aa-kode" id="aaKode" style="display:none"></div>
       <div class="aa-bagian">Akun Admin</div>
+      <div class="mf-field"><label for="aaKetua">Nama Ketua RT <b>*</b></label>
+        <input id="aaKetua" type="text" maxlength="80" placeholder="Nama lengkap, boleh dengan gelar" autocomplete="off"></div>
       <div class="mf-field"><label for="aaTelp">No. HP Admin <b>*</b></label>
         <input id="aaTelp" type="tel" inputmode="tel" maxlength="16" placeholder="081234567890" autocomplete="off"></div>
       <div class="mf-field"><label for="aaSandi">Kata Sandi (minimal 8 karakter) <b>*</b></label>
@@ -2232,7 +2234,7 @@ function perbaruiKodeAdminAwal(){
 ['aaKec','aaKel','aaRw','aaRt'].forEach(id => $(id).addEventListener('input', perbaruiKodeAdminAwal));
 ['aaRw','aaRt'].forEach(id => $(id).addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, ''); }));
 function bukaModalAdminAwal(){
-  ['aaKel','aaRw','aaRt','aaTelp','aaSandi','aaSandi2'].forEach(id => { $(id).value = ''; });
+  ['aaKel','aaRw','aaRt','aaKetua','aaTelp','aaSandi','aaSandi2'].forEach(id => { $(id).value = ''; });
   isiKecamatanAdminAwal(); $('aaKec').value = ''; $('aaKode').style.display = 'none';
   $('aaSandi').type = 'password'; $('aaMata').firstElementChild.className = 'fa-solid fa-eye';
   $('aaGalat').classList.remove('tampil');
@@ -2257,11 +2259,13 @@ $('formAdminAwal').addEventListener('submit', async (e) => {
   $('aaGalat').classList.remove('tampil');
   const kec = $('aaKec').value, kel = $('aaKel').value.trim().replace(/\s+/g, ' ');
   const rw = $('aaRw').value.replace(/\D/g, ''), rt = $('aaRt').value.replace(/\D/g, '');
+  const ketua = $('aaKetua').value.trim().replace(/\s+/g, ' ');
   const telp = $('aaTelp').value.trim(), s1 = $('aaSandi').value, s2 = $('aaSandi2').value;
   if (!kec) return galat('Kecamatan belum dipilih.');
   if (kel.length < 3) return galat('Kelurahan belum diisi.');
   if (!rw || parseInt(rw, 10) < 1) return galat('Nomor RW belum diisi.');
   if (!rt || parseInt(rt, 10) < 1) return galat('Nomor RT belum diisi.');
+  if (ketua.length < 3) return galat('Nama Ketua RT belum diisi.');
   if (telp.replace(/\D/g, '').length < 9) return galat('No. HP belum lengkap.');
   if (s1.length < 8) return galat('Kata sandi minimal 8 karakter.');
   if (/^\d{16}$/.test(s1.trim())) return galat('Kata sandi tidak boleh berupa 16 digit angka (menyerupai NIK).');
@@ -2269,7 +2273,7 @@ $('formAdminAwal').addEventListener('submit', async (e) => {
 
   const btn = $('aaSimpan'); btn.disabled = true; btn.textContent = 'Menyimpan...';
   try{
-    const { data, error } = await db.rpc('buat_admin_awal', { p_kd_kec: kec, p_kelurahan: kel, p_no_rw: rw, p_no_rt: rt, p_telp: telp, p_sandi: s1 });
+    const { data, error } = await db.rpc('buat_admin_awal', { p_kd_kec: kec, p_kelurahan: kel, p_no_rw: rw, p_no_rt: rt, p_nama_ketua: ketua, p_telp: telp, p_sandi: s1 });
     if (error) throw error;
     if (!data || !data.ok){
       if (data && data.ada){ adaAdmin = true; tutupModalAdminAwal(); muatIdentitasRt(); toast('Admin sudah ditetapkan. Silakan masuk.'); return; }
@@ -4612,19 +4616,20 @@ async function formNotula(){
    ===================================================================== */
 const LAP = {
   judul:'Laporan Kondusifitas Wilayah', judul2:'',          // kop diisi dari identitas RT (LAP_ISI_IDENT) setelah dimuat
-  qr:'Ketua RT', nama:'Poerwanto, S.Pd, M.Pd', jabatan:'Ketua RT',
+  qr:'Ketua RT', nama:'', jabatan:'Ketua RT',     // nama Ketua RT diisi dari identitas RT (LAP_ISI_IDENT)
   arsip:'Arsip: Medulu © 2026',
   qrMm:17.2,        // ukuran QR (setara 65 px)
   jarakMm:6.4       // jarak QR dari tabel (setara 24 px)
 };
 /* Kop laporan mengikuti identitas wilayah RT: "Laporan Kondusifitas Wilayah RT.09 RW.05" /
-   "Kelurahan Bonggoeya Kecamatan Wua-Wua". Nama Ketua RT di atas masih tertulis tetap (belum diubah). */
+   "Kelurahan Bonggoeya Kecamatan Wua-Wua". Nama Ketua RT (tanda tangan dan isi QR) mengikuti item Ketua RT pada identitas RT. */
 function LAP_ISI_IDENT(){
   if (!IDENT) return;
   LAP.judul  = 'Laporan Kondusifitas Wilayah RT.' + IDENT.no_rt + ' RW.' + IDENT.no_rw;
   LAP.judul2 = 'Kelurahan ' + IDENT.nama_kel + ' Kecamatan ' + IDENT.nama_kec;
   LAP.jabatan = 'Ketua RT.' + IDENT.no_rt;
-  LAP.qr = LAP.nama.split(',')[0] + ' | Ketua RT.' + IDENT.no_rt;
+  LAP.nama = IDENT.nama_ketua || '';                         // nama pada tanda tangan = item Ketua RT
+  LAP.qr = (LAP.nama ? LAP.nama.split(',')[0].trim() + ' | ' : '') + 'Ketua RT.' + IDENT.no_rt;
 }
 const LAP_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const lapPecah = (iso) => String(iso).slice(0, 10).split('-').map(Number);
