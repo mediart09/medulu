@@ -792,6 +792,69 @@
   .subform-isi{flex:1;overflow-y:auto;padding:16px}
   .subform-isi.penuh{padding:0;overflow:hidden;display:flex}
   .subform-isi.penuh iframe{flex:1;width:100%;height:100%;border:0;background:#fff}
+  /* ===== Pendataan (formulir input data warga, tertanam di Medulu; kelas berawalan pd-) ===== */
+  .pd{--garis:#d8e0ee;--ok:#15803d;--salah:#dc2626;font-size:1rem}
+  .pd label{margin-top:0}
+  .pd .pd-kartu{background:var(--kartu);border-radius:var(--radius);padding:16px;margin-bottom:14px;
+    box-shadow:0 6px 16px rgba(11,42,111,.08);transition:opacity .2s}
+  .pd .pd-kartu h2{font-size:.88rem;font-weight:600;color:var(--biru-tua);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .pd .pd-kartu h2 i{color:var(--biru)}
+  .pd .pd-kartu.pd-terkunci{opacity:.45;pointer-events:none}
+  .pd .pd-banner{display:none;border-radius:12px;padding:10px 12px;font-size:.78rem;margin-bottom:12px;line-height:1.45}
+  .pd .pd-banner.pd-tampil{display:block}
+  .pd .pd-banner.pd-info{background:#e8f1ff;color:#0b3a8a;border:1px solid #bcd3fb}
+  .pd .pd-banner.pd-baru{background:#fff4e5;color:#8a4b00;border:1px solid #ffd9a6}
+  .pd .pd-banner.pd-galat{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+  .pd .pd-banner.pd-ok{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+  .pd .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pd .pd-penuh{grid-column:1 / -1}
+  @media (max-width:420px){.pd .pd-grid{grid-template-columns:1fr}}
+  .pd label{display:block;font-size:.72rem;font-weight:500;color:var(--abu);margin-bottom:4px}
+  .pd label .pd-wajib{color:var(--salah)}
+  .pd label .pd-oto{font-weight:400;color:var(--biru);margin-left:4px}
+  .pd input, .pd select{width:100%;padding:10px 12px;border:1.5px solid var(--garis);border-radius:10px;font:inherit;
+    font-size:.88rem;background:#fff;color:var(--teks);outline:none;transition:border-color .15s}
+  .pd input:focus, .pd select:focus{border-color:var(--biru)}
+  .pd input[readonly]{background:#f1f5fb;color:var(--biru-tua);font-weight:500}
+  .pd input.pd-terisi-otomatis{background:#f1f7ff}
+  .pd input:disabled, .pd select:disabled{background:#f1f5f9;color:#94a3b8}
+  .pd .pd-bantu{font-size:.68rem;color:var(--abu);margin-top:3px}
+  .pd .pd-hitung{font-size:.68rem;color:var(--abu);text-align:right;margin-top:2px}
+  .pd .pd-baris-telp{display:flex;gap:8px}
+  .pd .pd-baris-telp input{flex:1;min-width:0}
+  .pd .pd-btn-verif{display:none;flex:none;padding:0 14px;border:0;border-radius:10px;font:inherit;font-size:.8rem;font-weight:600;
+    color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--biru),var(--biru-muda))}
+  .pd .pd-btn-verif:disabled{opacity:.6;cursor:wait}
+  .pd .pd-unggah{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pd .pd-btn-unggah{padding:10px 8px;border:1.5px dashed var(--biru-muda);border-radius:10px;background:#f4f9ff;color:var(--biru-tua);
+    font:inherit;font-size:.78rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .pd .pd-btn-unggah:disabled{opacity:.5;cursor:not-allowed}
+  .pd .pd-info-file{display:none;margin-top:8px;align-items:center;gap:10px;padding:8px;border:1.5px solid var(--garis);border-radius:10px}
+  .pd .pd-info-file.pd-ada{display:flex}
+  .pd .pd-info-file img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:none}
+  .pd .pd-info-file .pd-ikon-pdf{width:44px;height:44px;border-radius:8px;background:#fee2e2;color:#dc2626;font-size:1.3rem;
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .pd .pd-info-file .pd-nama{flex:1;min-width:0;font-size:.75rem;color:var(--abu);line-height:1.4}
+  .pd .pd-info-file .pd-nama b{display:block;color:var(--teks);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pd .pd-info-file button{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#f1f5f9;color:var(--abu);font-size:1rem;cursor:pointer}
+  .pd .pd-pemilu{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .pd .pd-lencana{display:inline-block;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;background:#e2e8f0;color:#475569}
+  .pd .pd-lencana.pd-lokal{background:#dcfce7;color:#166534}
+  .pd .pd-lencana.pd-luar{background:#dbeafe;color:#1e40af}
+  .pd .pd-lencana.pd-non{background:#f1f5f9;color:#64748b}
+  .pd .pd-btn{width:100%;padding:13px;border:0;border-radius:12px;font:inherit;font-weight:600;font-size:.95rem;color:#fff;
+    cursor:pointer;background:linear-gradient(135deg,#ff9a3c,#ff7a00);box-shadow:0 8px 20px rgba(255,122,0,.35)}
+  .pd .pd-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+  .pd .pd-btn.pd-sekunder{background:linear-gradient(135deg,var(--biru),var(--biru-muda));box-shadow:0 8px 20px rgba(21,88,201,.3)}
+  .pd .pd-btn.pd-polos{background:#fff;color:var(--biru-tua);border:1.5px solid var(--garis);box-shadow:none}
+  .pd .pd-sukses{display:none;text-align:center}
+  .pd .pd-sukses.pd-tampil{display:block}
+  .pd .pd-sukses .pd-centang{width:56px;height:56px;border-radius:50%;background:#dcfce7;color:var(--ok);font-size:1.6rem;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+  .pd .pd-sukses h2{justify-content:center;font-size:1rem}
+  .pd .pd-ringkas{margin:10px 0 14px;font-size:.8rem;color:var(--abu);line-height:1.7}
+  .pd .pd-ringkas b{color:var(--biru-tua)}
+  .pd .pd-tombol-baris{display:grid;gap:10px}
   .kosong{margin-top:40px;text-align:center;color:var(--abu);font-size:.85rem}
   .kosong i{font-size:2.4rem;color:var(--biru-muda);margin-bottom:10px;display:block}
   .kartu-stat{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:0 6px 16px rgba(11,42,111,.08)}
@@ -3645,6 +3708,485 @@ function setIkonHeader(jk){
   k.setAttribute('aria-label', p ? 'Perempuan' : 'Laki-laki');
   hd.classList.add('ada-kanan');
 }
+/* =====================================================================
+   PENDATAAN: formulir input data warga (NKK, data keluarga, data pribadi, berkas KK).
+   Tertanam langsung di Medulu (bukan iframe) dan memakai koneksi Supabase `db` yang sama.
+   RPC: cari_keluarga, tambah_warga (file SQL 01); berkas KK -> bucket privat "kk".
+   Hasil input langsung masuk ke tabel warga (master data).
+   ===================================================================== */
+function renderPendataan(isi){
+  if (!db){ isi.innerHTML = '<div class="kosong"><i class="fa-solid fa-plug-circle-xmark"></i> Aplikasi belum dihubungkan ke database.</div>'; return; }
+  isi.innerHTML = `<div class="pd">
+    <!-- Hasil setelah menyimpan -->
+    <section class="pd-kartu pd-sukses" id="pd_kartuSukses">
+      <div class="pd-centang"><i class="fa-solid fa-check"></i></div>
+      <h2>Data tersimpan</h2>
+      <div class="pd-ringkas" id="pd_ringkasSukses"></div>
+      <div class="pd-tombol-baris">
+        <button class="pd-btn pd-sekunder" id="pd_btnTambahAnggota" type="button"><i class="fa-solid fa-user-plus"></i> Tambah anggota keluarga ini (NKK sama)</button>
+        <button class="pd-btn pd-polos" id="pd_btnKeluargaBaru" type="button">Input keluarga baru</button>
+      </div>
+    </section>
+
+    <form id="pd_form" autocomplete="off" novalidate>
+      <div class="pd-banner" id="pd_banner"></div>
+
+      <section class="pd-kartu">
+        <h2><i class="fa-solid fa-people-roof"></i> Data Keluarga</h2>
+        <div class="pd-grid">
+          <div class="pd-penuh">
+            <label for="pd_nkk">NKK <span class="pd-wajib">*</span></label>
+            <input id="pd_nkk" type="text" inputmode="numeric" maxlength="16" placeholder="16 digit Nomor Kartu Keluarga">
+            <div class="pd-hitung"><span id="pd_hitungNkk">0</span>/16</div>
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_no_hp">No. HP Keluarga <span class="pd-wajib">*</span></label>
+            <div class="pd-baris-telp">
+              <input id="pd_no_hp" type="tel" inputmode="tel" placeholder="08xxxxxxxxxx">
+              <button type="button" class="pd-btn-verif" id="pd_btnVerifikasi">Verifikasi</button>
+            </div>
+            <div class="pd-bantu">Dipakai sebagai verifikasi bila ada anggota keluarga lain yang ditambahkan.</div>
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_email">Email</label>
+            <input id="pd_email" type="email" placeholder="nama@email.com">
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_nama_kk">Nama KK (Kepala Keluarga)</label>
+            <input id="pd_nama_kk" type="text" placeholder="Nama kepala keluarga">
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_alamat">Alamat</label>
+            <input id="pd_alamat" type="text" placeholder="Contoh: Komp. BTN 2 Blok...">
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_status_tinggal">Status Tinggal</label>
+            <select id="pd_status_tinggal">
+              <option value="">— pilih —</option>
+              <option>WAT</option><option>WAP</option><option>WDT</option><option>WDS</option>
+            </select>
+          </div>
+          <div class="pd-penuh">
+            <label>Link KK (foto atau berkas Kartu Keluarga)</label>
+            <div class="pd-unggah">
+              <button type="button" class="pd-btn-unggah" id="pd_btnKamera"><i class="fa-solid fa-camera"></i> Foto langsung</button>
+              <button type="button" class="pd-btn-unggah" id="pd_btnFile"><i class="fa-solid fa-file-arrow-up"></i> Pilih file</button>
+            </div>
+            <input type="file" id="pd_inKamera" accept="image/*" capture="environment" hidden>
+            <input type="file" id="pd_inFile" accept="application/pdf,image/jpeg,image/png" hidden>
+            <div class="pd-info-file" id="pd_infoFile"></div>
+            <div class="pd-bantu" id="pd_bantuFile">PDF, JPG, atau PNG. Maksimal 5 MB.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pd-kartu" id="pd_kartuPribadi">
+        <h2><i class="fa-solid fa-id-card"></i> Data Pribadi</h2>
+        <div class="pd-grid">
+          <div class="pd-penuh">
+            <label for="pd_nik">NIK <span class="pd-wajib">*</span></label>
+            <input id="pd_nik" type="text" inputmode="numeric" maxlength="16" placeholder="16 digit NIK">
+            <div class="pd-hitung"><span id="pd_hitungNik">0</span>/16</div>
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_nama_lengkap">Nama Lengkap <span class="pd-wajib">*</span></label>
+            <input id="pd_nama_lengkap" type="text" placeholder="Boleh beserta gelar">
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_nama_asli">Nama Asli <span class="pd-oto">(otomatis, tanpa gelar)</span></label>
+            <input id="pd_nama_asli" type="text" readonly tabindex="-1">
+          </div>
+          <div>
+            <label for="pd_jender">Jender <span class="pd-wajib">*</span></label>
+            <select id="pd_jender"><option value="">— pilih —</option><option>Laki-laki</option><option>Perempuan</option></select>
+          </div>
+          <div>
+            <label for="pd_hubungan">Hubungan dalam KK</label>
+            <select id="pd_hubungan">
+              <option value="">— pilih —</option>
+              <option>Kepala Keluarga</option><option>Istri</option><option>Suami</option><option>Anak</option>
+              <option>Menantu</option><option>Cucu</option><option>Orang Tua</option><option>Mertua</option>
+              <option>Famili Lain</option><option>Lainnya</option>
+            </select>
+          </div>
+          <div>
+            <label for="pd_tempat_lahir">Tempat Lahir</label>
+            <input id="pd_tempat_lahir" type="text">
+          </div>
+          <div>
+            <label for="pd_tgl_lahir">Tanggal Lahir <span class="pd-wajib">*</span></label>
+            <input id="pd_tgl_lahir" type="date">
+          </div>
+          <div>
+            <label for="pd_usia">Usia <span class="pd-oto">(otomatis)</span></label>
+            <input id="pd_usia" type="text" readonly tabindex="-1">
+          </div>
+          <div>
+            <label for="pd_agama">Agama</label>
+            <select id="pd_agama">
+              <option value="">— pilih —</option>
+              <option>Islam</option><option>Kristen</option><option>Katolik</option>
+              <option>Hindu</option><option>Buddha</option><option>Konghucu</option>
+            </select>
+          </div>
+          <div>
+            <label for="pd_status">Status (perkawinan)</label>
+            <select id="pd_status">
+              <option value="">— pilih —</option>
+              <option>Belum Nikah</option><option>Sudah Nikah</option><option>Cerai Hidup</option><option>Cerai Mati</option>
+            </select>
+          </div>
+          <div>
+            <label for="pd_pendidikan">Pendidikan</label>
+            <select id="pd_pendidikan">
+              <option value="">— pilih —</option>
+              <option>Belum/Tidak Sekolah</option><option>SD</option><option>SMP</option><option>SMA/SMK</option>
+              <option>D1/D2/D3</option><option>D4/S1</option><option>S2</option><option>S3</option>
+            </select>
+          </div>
+          <div class="pd-penuh">
+            <label for="pd_pekerjaan">Pekerjaan</label>
+            <input id="pd_pekerjaan" type="text" list="pd_daftarPekerjaan" placeholder="Pilih atau ketik">
+            <datalist id="pd_daftarPekerjaan">
+              <option value="PNS"><option value="TNI"><option value="Polri"><option value="Wiraswasta">
+              <option value="Karyawan Swasta"><option value="Pelajar/Mahasiswa"><option value="Mengurus Rumah Tangga">
+              <option value="Pensiunan"><option value="Petani/Nelayan"><option value="Buruh"><option value="Belum/Tidak Bekerja">
+            </datalist>
+            <div class="pd-bantu">Tulis “TNI” atau “Polri” bagi anggota aktif agar status pemilu terhitung benar.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pd-kartu" id="pd_kartuPemilu">
+        <h2><i class="fa-solid fa-check-to-slot"></i> Status dalam Pemilu <span class="pd-oto" style="font-weight:400;font-size:.7rem;color:var(--biru)">(otomatis)</span></h2>
+        <div class="pd-pemilu">
+          <span class="pd-lencana" id="pd_lencanaPemilu">—</span>
+          <span class="pd-bantu" style="max-width:55%;text-align:right" id="pd_alasanPemilu">Isi tanggal lahir &amp; status tinggal</span>
+        </div>
+      </section>
+
+      <button class="pd-btn" id="pd_btnSimpan" type="submit"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+    </form>
+  </div>`;
+  const P = (id) => document.getElementById('pd_' + id);
+  const BUCKET_KK = 'kk';
+  const MAKS_BERKAS = 5 * 1024 * 1024;   // 5 MB
+
+
+  /* Status NKK yang sedang diketik:
+     kosong | baru | perlu_verifikasi | tanpa_telp | terverifikasi */
+  let statusNkk = 'kosong';
+  let berkas = null;                       // { blob, tipe, ext, nama, ukuran, pratinjau }
+
+  const FIELD_KELUARGA = ['nama_kk','alamat','status_tinggal','email'];
+  const FIELD_PRIBADI  = ['nik','nama_lengkap','jender','hubungan','tempat_lahir','tgl_lahir','agama','status',
+                          'pendidikan','pekerjaan'];
+
+  /* ---------- Utilitas ---------- */
+  function hanyaAngka(s){ return String(s||'').replace(/\D/g,''); }
+  function uuid(){
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    const b = crypto.getRandomValues(new Uint8Array(16));
+    b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+    const h = [...b].map(x => x.toString(16).padStart(2,'0')).join('');
+    return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
+  }
+  function tampilBanner(jenis, teks){
+    const b = P('banner'); b.className = 'pd-banner pd-tampil pd-' + jenis; b.textContent = teks;
+  }
+  function sembunyiBanner(){ P('banner').className = 'pd-banner'; }
+  function keAtas(){ isi.scrollTo({ top: 0, behavior: 'smooth' }); }
+  function ukuranTeks(n){ return n >= 1048576 ? (n/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n/1024)) + ' KB'; }
+
+  /* Nama tanpa gelar (aturan sama dengan di database) */
+  function namaTanpaGelar(nama){
+    if (!nama) return '';
+    const depan = String(nama).split(',')[0];
+    const gelarDepan = /^(dr|drs|dra|ir|prof|h|hj|haji|hajjah|kh|ust|ustadz|ustadzah|dato|datuk)\.?$/i;
+    const gelarBelakang = /^[A-Za-z]{1,4}\.[A-Za-z.]+$/;
+    const kata = depan.trim().split(/\s+/).filter(k => k && !gelarDepan.test(k) && !gelarBelakang.test(k));
+    return kata.join(' ') || depan.trim();
+  }
+  function hitungUsia(tgl){
+    if (!tgl) return null;
+    const [y,m,d] = tgl.split('-').map(Number);
+    if (!y || !m || !d) return null;
+    const n = new Date();
+    let usia = n.getFullYear() - y;
+    if (n.getMonth()+1 < m || (n.getMonth()+1 === m && n.getDate() < d)) usia--;
+    return usia < 0 ? null : usia;
+  }
+  /* Pemilih Lokal: usia>=17, bukan TNI/Polri, hidup, WAT/WAP. Pemilih Luar: WDT/WDS. Selain itu Non Pemilih. */
+  function hitungPemilu(usia, pekerjaan, statusTinggal){
+    if (usia === null || usia < 17) return ['Non Pemilih', usia === null ? 'Tanggal lahir belum diisi' : 'Usia di bawah 17 tahun'];
+    const kerja = pekerjaan || '';
+    if (/(^|[^a-z])(tni|polri|polisi)([^a-z]|$)/i.test(kerja) && !/pensiun/i.test(kerja))
+      return ['Non Pemilih', 'Anggota TNI/Polri'];
+    const st = (statusTinggal || '').toUpperCase();
+    if (st === 'WAT' || st === 'WAP') return ['Pemilih Lokal', 'Usia ≥ 17, status tinggal ' + st];
+    if (st === 'WDT' || st === 'WDS') return ['Pemilih Luar', 'Usia ≥ 17, status tinggal ' + st];
+    return ['Non Pemilih', 'Status tinggal belum dipilih / bukan WAT, WAP, WDT, WDS'];
+  }
+  function segarkanOtomatis(){
+    P('nama_asli').value = namaTanpaGelar(P('nama_lengkap').value);
+    const usia = hitungUsia(P('tgl_lahir').value);
+    P('usia').value = usia === null ? '' : usia + ' tahun';
+    const [status, alasan] = hitungPemilu(usia, P('pekerjaan').value, P('status_tinggal').value);
+    const l = P('lencanaPemilu');
+    l.textContent = status;
+    l.className = 'pd-lencana ' + (status === 'Pemilih Lokal' ? 'pd-lokal' : status === 'Pemilih Luar' ? 'pd-luar' : 'pd-non');
+    P('alasanPemilu').textContent = alasan;
+  }
+
+  /* ---------- Kunci form sampai NKK terverifikasi ---------- */
+  function aturKunci(){
+    const kunci = statusNkk === 'perlu_verifikasi' || statusNkk === 'tanpa_telp';
+    [...FIELD_KELUARGA, 'btnKamera', 'btnFile'].forEach(id => { P(id).disabled = kunci; });
+    P('kartuPribadi').classList.toggle('pd-terkunci', kunci);
+    P('kartuPemilu').classList.toggle('pd-terkunci', kunci);
+    P('btnSimpan').disabled = kunci;
+    P('btnVerifikasi').style.display = statusNkk === 'perlu_verifikasi' ? 'block' : 'none';
+  }
+  function kosongkanOtomatis(){
+    FIELD_KELUARGA.forEach(f => { if (P(f).classList.contains('pd-terisi-otomatis')){ P(f).value = ''; P(f).classList.remove('pd-terisi-otomatis'); } });
+  }
+  function setStatus(s){ statusNkk = s; aturKunci(); segarkanOtomatis(); }
+
+  /* ---------- NKK: cek baru / sudah terdaftar, lalu verifikasi dengan No. HP ---------- */
+  async function cekNkk(denganTelp){
+    const nkk = hanyaAngka(P('nkk').value);
+    if (nkk.length !== 16) return;
+    const tombol = P('btnVerifikasi');
+    if (denganTelp){ tombol.disabled = true; tombol.textContent = 'Memeriksa…'; }
+    try{
+      const { data, error } = await db.rpc('cari_keluarga', { p_nkk: nkk, p_telp: denganTelp ? P('no_hp').value : '' });
+      if (error) throw error;
+      if (nkk !== hanyaAngka(P('nkk').value)) return;          // NKK diubah saat menunggu
+
+      if (data.status === 'baru'){
+        setStatus('baru');
+        tampilBanner('baru', 'NKK baru. Lengkapi data keluarga, lalu data pribadi. No. HP akan dipakai sebagai verifikasi untuk anggota keluarga berikutnya.');
+      } else if (data.status === 'perlu_verifikasi'){
+        setStatus(data.tanpa_telp ? 'tanpa_telp' : 'perlu_verifikasi');
+        if (data.tanpa_telp)
+          tampilBanner('galat', 'NKK ini sudah terdaftar, tetapi nomor HP keluarga belum tercatat sehingga tidak dapat diverifikasi. Hubungi pengurus RT.');
+        else if (!data.ok)
+          tampilBanner('galat', data.pesan);
+        else
+          tampilBanner('baru', 'NKK sudah terdaftar. Masukkan No. HP yang terdaftar pada keluarga ini, lalu tekan Verifikasi untuk menambah anggota.');
+      } else if (data.status === 'terverifikasi'){
+        setStatus('terverifikasi');
+        FIELD_KELUARGA.forEach(f => {
+          if (data[f] && !P(f).value){ P(f).value = data[f]; P(f).classList.add('pd-terisi-otomatis'); }
+        });
+        tampilBanner('ok', 'Terverifikasi (' + data.jumlah + ' anggota terdaftar). Data keluarga terisi otomatis' +
+          (data.ada_berkas_kk ? ', berkas KK sudah ada (unggah lagi hanya bila ingin mengganti)' : '') +
+          '. Cukup isi data anggota yang ditambahkan.');
+        segarkanOtomatis();
+      } else if (!data.ok){
+        tampilBanner('galat', data.pesan || 'Terjadi kesalahan.');
+      }
+    }catch(err){
+      console.error(err); tampilBanner('galat', 'Gagal memeriksa NKK. Periksa koneksi.');
+    }finally{
+      tombol.disabled = false; tombol.textContent = 'Verifikasi';
+    }
+  }
+
+  /* ---------- Event input ---------- */
+  P('nkk').addEventListener('input', e => {
+    e.target.value = hanyaAngka(e.target.value).slice(0,16);
+    P('hitungNkk').textContent = e.target.value.length;
+    kosongkanOtomatis(); sembunyiBanner();
+    statusNkk = 'kosong'; aturKunci();
+    if (e.target.value.length === 16) cekNkk(false);
+  });
+  P('no_hp').addEventListener('input', () => {
+    if (statusNkk === 'terverifikasi'){          // nomor diubah setelah verifikasi -> verifikasi ulang
+      kosongkanOtomatis();
+      setStatus('perlu_verifikasi');
+      tampilBanner('baru', 'Nomor HP diubah. Tekan Verifikasi lagi.');
+    }
+  });
+  P('btnVerifikasi').addEventListener('click', () => {
+    if (hanyaAngka(P('no_hp').value).length < 9) return tampilBanner('galat', 'Isi No. HP keluarga (minimal 9 digit).');
+    cekNkk(true);
+  });
+  P('nik').addEventListener('input', e => {
+    e.target.value = hanyaAngka(e.target.value).slice(0,16);
+    P('hitungNik').textContent = e.target.value.length;
+  });
+  ['nama_lengkap','tgl_lahir','pekerjaan','status_tinggal'].forEach(id => {
+    P(id).addEventListener('input', segarkanOtomatis);
+    P(id).addEventListener('change', segarkanOtomatis);
+  });
+  FIELD_KELUARGA.forEach(f => P(f).addEventListener('input', () => P(f).classList.remove('pd-terisi-otomatis')));
+
+  /* KK baru & orang ini Kepala Keluarga: nama KK = nama lengkapnya (bila nama KK masih kosong) */
+  P('hubungan').addEventListener('change', () => {
+    if (P('hubungan').value === 'Kepala Keluarga' && !P('nama_kk').value && P('nama_lengkap').value)
+      P('nama_kk').value = P('nama_lengkap').value;
+  });
+
+  /* ---------- Foto / berkas KK ---------- */
+  function tampilBerkas(){
+    const el = P('infoFile');
+    el.replaceChildren();
+    if (!berkas){ el.className = 'pd-info-file'; return; }
+    el.className = 'pd-info-file pd-ada';
+    if (berkas.pratinjau){
+      const img = document.createElement('img'); img.src = berkas.pratinjau; img.alt = 'Pratinjau'; el.appendChild(img);
+    } else {
+      const ik = document.createElement('div'); ik.className = 'pd-ikon-pdf'; ik.innerHTML = '<i class="fa-solid fa-file-pdf"></i>'; el.appendChild(ik);
+    }
+    const nama = document.createElement('div'); nama.className = 'pd-nama';
+    const b = document.createElement('b'); b.textContent = berkas.nama;
+    nama.appendChild(b); nama.appendChild(document.createTextNode(ukuranTeks(berkas.ukuran)));
+    el.appendChild(nama);
+    const x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label','Hapus'); x.textContent = '×';
+    x.addEventListener('click', hapusBerkas);
+    el.appendChild(x);
+  }
+  function hapusBerkas(){
+    if (berkas && berkas.pratinjau) URL.revokeObjectURL(berkas.pratinjau);
+    berkas = null; tampilBerkas();
+  }
+  /* Foto diperkecil (maks. 1800 px, JPEG) agar ringan diunggah */
+  function kompresGambar(file){
+    return new Promise((ok, gagal) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const skala = Math.min(1, 1800 / Math.max(img.width, img.height));
+        const w = Math.round(img.width * skala), h = Math.round(img.height * skala);
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, 0, 0, w, h);
+        c.toBlob(b => { URL.revokeObjectURL(url); b ? ok(b) : gagal(new Error('gagal')); }, 'image/jpeg', 0.82);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); gagal(new Error('tidak terbaca')); };
+      img.src = url;
+    });
+  }
+  async function pilihBerkas(file){
+    if (!file) return;
+    try{
+      if (file.type === 'application/pdf'){
+        if (file.size > MAKS_BERKAS) return tampilBanner('galat', 'Ukuran PDF maksimal 5 MB.');
+        hapusBerkas();
+        berkas = { blob: file, tipe: 'application/pdf', ext: 'pdf', nama: file.name, ukuran: file.size, pratinjau: null };
+      } else if (file.type.startsWith('image/')){
+        const blob = await kompresGambar(file);
+        if (blob.size > MAKS_BERKAS) return tampilBanner('galat', 'Ukuran foto terlalu besar.');
+        hapusBerkas();
+        berkas = { blob, tipe: 'image/jpeg', ext: 'jpg', nama: file.name || 'foto-kk.jpg', ukuran: blob.size,
+                   pratinjau: URL.createObjectURL(blob) };
+      } else {
+        return tampilBanner('galat', 'Format berkas harus PDF, JPG, atau PNG.');
+      }
+      sembunyiBanner(); tampilBerkas();
+    }catch(err){
+      console.error(err); tampilBanner('galat', 'Foto tidak dapat dibaca. Coba foto ulang atau gunakan PDF/JPG/PNG.');
+    }
+  }
+  P('btnKamera').addEventListener('click', () => P('inKamera').click());
+  P('btnFile').addEventListener('click', () => P('inFile').click());
+  P('inKamera').addEventListener('change', e => { pilihBerkas(e.target.files[0]); e.target.value = ''; });
+  P('inFile').addEventListener('change', e => { pilihBerkas(e.target.files[0]); e.target.value = ''; });
+
+  async function unggahBerkas(nkk){
+    const path = nkk + '/' + uuid() + '.' + berkas.ext;
+    const { error } = await db.storage.from(BUCKET_KK).upload(path, berkas.blob, { contentType: berkas.tipe, upsert: false });
+    if (error) throw error;
+    return path;
+  }
+
+  /* ---------- Simpan ---------- */
+  function validasi(){
+    if (hanyaAngka(P('nkk').value).length !== 16) return ['nkk','NKK harus 16 digit angka.'];
+    if (hanyaAngka(P('no_hp').value).length < 9) return ['no_hp','No. HP keluarga wajib diisi (minimal 9 digit).'];
+    if (statusNkk === 'perlu_verifikasi' || statusNkk === 'tanpa_telp') return ['no_hp','Verifikasi dulu dengan No. HP yang terdaftar pada keluarga ini.'];
+    if (hanyaAngka(P('nik').value).length !== 16) return ['nik','NIK harus 16 digit angka.'];
+    if (!P('nama_lengkap').value.trim()) return ['nama_lengkap','Nama lengkap wajib diisi.'];
+    if (!P('jender').value) return ['jender','Jender wajib dipilih.'];
+    if (!P('tgl_lahir').value) return ['tgl_lahir','Tanggal lahir wajib diisi (dipakai untuk usia & status pemilu).'];
+    return null;
+  }
+
+  P('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const galat = validasi();
+    if (galat){ tampilBanner('galat', galat[1]); P(galat[0]).focus(); keAtas(); return; }
+
+    const nkk = hanyaAngka(P('nkk').value);
+    const btn = P('btnSimpan'); btn.disabled = true; btn.textContent = 'Menyimpan…';
+    try{
+      let pathKk = null;
+      if (berkas){ btn.textContent = 'Mengunggah berkas KK…'; pathKk = await unggahBerkas(nkk); btn.textContent = 'Menyimpan…'; }
+
+      const payload = {
+        nik: hanyaAngka(P('nik').value), nkk,
+        nama_lengkap: P('nama_lengkap').value.trim(), jender: P('jender').value,
+        tempat_lahir: P('tempat_lahir').value.trim(), tgl_lahir: P('tgl_lahir').value,
+        pekerjaan: P('pekerjaan').value.trim(), agama: P('agama').value, status: P('status').value,
+        alamat: P('alamat').value.trim(), email: P('email').value.trim(), pendidikan: P('pendidikan').value,
+        nama_kk: P('nama_kk').value.trim(), hubungan: P('hubungan').value, no_hp: P('no_hp').value.trim(),
+        link_kk: pathKk, status_tinggal: P('status_tinggal').value
+      };
+      const { data, error } = await db.rpc('tambah_warga', { p: payload });
+      if (error) throw error;
+      if (!data.ok){ tampilBanner('galat', data.pesan); keAtas(); return; }
+
+      P('ringkasSukses').replaceChildren();
+      const baris = (teks, tebal) => {
+        const d = document.createElement('div');
+        if (tebal){ const b = document.createElement('b'); b.textContent = tebal; d.appendChild(b); }
+        d.appendChild(document.createTextNode(teks)); P('ringkasSukses').appendChild(d);
+      };
+      baris(' (urutan ke-' + data.no_urut + ')', data.nama_asli);
+      baris('Usia ' + (data.usia ?? '-') + ' tahun · ' + data.status_pemilu);
+      baris('KK: ' + (data.nama_kk || '-'));
+      P('form').style.display = 'none';
+      P('kartuSukses').classList.add('pd-tampil');
+      keAtas();
+    }catch(err){
+      console.error(err);
+      tampilBanner('galat', berkas ? 'Gagal mengunggah atau menyimpan. Periksa koneksi lalu coba lagi.' : 'Tidak dapat menyimpan. Periksa koneksi lalu coba lagi.');
+      keAtas();
+    }finally{
+      btn.textContent = 'Simpan'; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan'; aturKunci();
+    }
+  });
+
+  /* ---------- Setelah tersimpan ---------- */
+  function kosongkan(ids){
+    ids.forEach(id => { const el = P(id); el.value = ''; el.classList.remove('pd-terisi-otomatis'); });
+  }
+  function kembaliKeForm(){
+    P('kartuSukses').classList.remove('pd-tampil');
+    P('form').style.display = 'block';
+    P('hitungNik').textContent = '0';
+    aturKunci(); segarkanOtomatis();
+  }
+  P('btnTambahAnggota').addEventListener('click', () => {
+    kosongkan(FIELD_PRIBADI);                  // NKK, No. HP, dan data keluarga dipertahankan
+    hapusBerkas();                             // berkas KK sudah tersimpan untuk keluarga ini
+    statusNkk = 'terverifikasi';               // keluarga baru saja disimpan dengan No. HP ini
+    tampilBanner('ok', 'NKK sama: data keluarga dipertahankan. Isi NIK dan data anggota berikutnya.');
+    kembaliKeForm();
+    P('nik').focus();
+  });
+  P('btnKeluargaBaru').addEventListener('click', () => {
+    kosongkan(['nkk','no_hp', ...FIELD_KELUARGA, ...FIELD_PRIBADI]);
+    hapusBerkas();
+    P('hitungNkk').textContent = '0'; statusNkk = 'kosong';
+    sembunyiBanner(); kembaliKeForm();
+    P('nkk').focus();
+  });
+
+  aturKunci();
+  segarkanOtomatis();
+}
+
 function bukaSubform(kunci, dariAdmin){
   const s = DAFTAR_SUBFORM[kunci]; if (!s) return;
   if (MENU_KHUSUS.includes(kunci) && !aksesPenuh) return;
@@ -3655,10 +4197,10 @@ function bukaSubform(kunci, dariAdmin){
   setIkonHeader('');
   $('judulSubform').textContent = s.judul;
   const isi = $('isiSubform');
-  isi.classList.toggle('penuh', kunci === 'pendataan');
+  isi.classList.remove('penuh');
 
   if (kunci === 'pendataan'){
-    isi.innerHTML = '<iframe src="https://layanan16.github.io/nkk" title="Pendataan" allow="clipboard-write; camera; geolocation"></iframe>';
+    renderPendataan(isi);
   } else if (kunci === 'statistik' && statistik){
     renderStatistik(isi);
   } else if (kunci === 'verifikasi'){
@@ -3705,7 +4247,7 @@ function tutupSubform(){
   arRefreshFn = null;
   $('subform').classList.remove('buka');
   $('subform').setAttribute('aria-hidden','true');
-  /* kosongkan iframe Pendataan setelah geseran tutup selesai */
+  /* kosongkan isi subform layar penuh setelah geseran tutup selesai */
   if ($('isiSubform').classList.contains('penuh')) setTimeout(() => {
     if (!$('subform').classList.contains('buka')){ $('isiSubform').innerHTML = ''; $('isiSubform').classList.remove('penuh'); }
   }, 350);
