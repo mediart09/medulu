@@ -4135,6 +4135,7 @@ function renderPendataan(isi){
       const { data, error } = await db.rpc('tambah_warga', { p: payload });
       if (error) throw error;
       if (!data.ok){ tampilBanner('galat', data.pesan); keAtas(); return; }
+    muatStatistik();                         // segarkan angka KK/Jiwa/Wafat & grafik di header beranda
 
       P('ringkasSukses').replaceChildren();
       const baris = (teks, tebal) => {
