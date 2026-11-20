@@ -34,7 +34,7 @@ Nama admin tidak lagi tertulis di index.html maupun SQL. Admin ditetapkan lewat 
 3. **Admin Cadangan**: dari Admin utama, buka Administrasi > **Admin Cadangan**, isi No. HP + NIK (1 orang saja; bisa diubah/dihapus). Orangnya harus sudah terdaftar di data warga dengan No. HP yang sama. Ia masuk lewat login biasa (No. HP + NIK) dan mendapat hak admin yang sama. Hanya Admin utama yang melihat tombol ini.
 4. Semua pemeriksaan hak admin di SQL (Korespondensi, Database Warga, Laporan, Polling, Ronda, Profil RT, dst.) kini memakai satu fungsi: `_is_admin(token)` di file 02.
 5. Admin utama tidak punya baris di tabel `warga`, jadi menu **MyData** dan **Pengajuan Surat Pengantar** (data pribadi) tidak tersedia baginya; untuk keperluan pribadi ia masuk dengan No. HP + NIK. Admin utama tidak ikut memberi suara polling dan bukan petugas ronda.
-6. Kolom `warga.peran = 'Admin'` **tidak lagi memberi hak admin**. Peran `Pengurus` tetap boleh memproses Surat Pengantar seperti sebelumnya.
+6. Kolom `warga.peran = 'Admin'` **tidak lagi memberi hak admin**. Peran `Pengurus` (kolom `warga.peran`) dan nama yang tercantum di Profil RT > Pengurus RT **juga tidak memberi hak admin**. Memproses Surat Pengantar dan hak admin lainnya hanya untuk Admin utama dan Admin Cadangan.
 
 ## Format nomor surat (semua dokumen)
 
@@ -53,7 +53,26 @@ contoh Kec. Wua-Wua, Kel. Bonggoeya, RW 05, RT 09:  001/UND-RT09/070105/XI/2026
   ```sql
   update public.identitas_rt set kd_kec='07', nama_kec='Wua-Wua', nama_kel='Bonggoeya', no_rw='05', no_rt='09';
   ```
+- **Nama Ketua RT** diisi pada modal Buat Admin (kolom `identitas_rt.nama_ketua`). Dipakai sebagai placeholder `{{ketua_rt}}` di template Google Docs, nama pada tanda tangan laporan, dan isi kode QR: laporan `<nama> | Ketua RT.09 | <nomor>`, surat pengantar `<nama> | Ketua RT09 | <nomor> | <tanggal>` (nama tanpa gelar). Database yang admin-nya sudah dibuat sebelum item ini ada, isi manual:
+  ```sql
+  update public.identitas_rt set nama_ketua = 'Nama Ketua RT, gelar';
+  ```
 - Kop dan tanda tangan pada PDF yang dibuat Apps Script dari template Google Docs (Surat Keluar, Undangan, Notula, Surat Pengantar) tidak berasal dari index.html. Nomornya otomatis mengikuti format baru karena diambil dari database; tulisan "RT 09 / Kelurahan / Kecamatan" di template Docs diubah manual di templatenya.
+
+## Persetujuan penggunaan data
+
+- **Warga:** setelah masuk, bila belum menyetujui versi teks yang berlaku, muncul layar "Persetujuan Penggunaan Data" (tombol Keluar atau Saya mengerti dan setuju). Dicatat di tabel `persetujuan_data` (waktu, versi, sumber `warga`). Admin utama tidak diminta, karena tidak punya data warga.
+- **Pendataan:** Admin wajib mencentang pernyataan bahwa data diinput dengan sepengetahuan dan persetujuan pemilik data (atau orang tua/wali bagi anak). Dicatat dengan sumber `admin` dan id admin yang menginput. Warga tetap melihat layar persetujuan saat masuk pertama.
+- **Teks** ada di `TEKS_PERSETUJUAN` pada index.html, dipakai juga pada Bantuan butir 2. **Bila isinya diubah**, naikkan angka di fungsi `_versi_persetujuan()` (file 02) dan jalankan ulang file 02 supaya semua warga diminta setuju lagi.
+- Cek catatan: `select w.nama, p.sumber, p.versi, p.disetujui_pada from persetujuan_data p join warga w on w.id = p.warga_id order by p.disetujui_pada desc;`
+- Kalimat persetujuan ini disusun sebagai pemberitahuan umum, bukan nasihat hukum. Sebaiknya diperiksa pihak yang berwenang (misalnya kelurahan) sebelum dipakai resmi.
+
+## Verifikasi dokumen (QR), email pemohon, dan pemantauan
+
+- **QR bisa diverifikasi.** Isi `APP_URL` di `Persetujuan.gs` dengan alamat aplikasi (mis. `https://nama.github.io/medulu/`). QR pada surat pengantar lalu berisi `<alamat>?cek=<nomor surat>`; QR pada PDF laporan memakai alamat halaman tempat laporan dicetak. Memindainya membuka halaman "Verifikasi Dokumen" (fungsi `verifikasi_dokumen` di file 13): jenis dokumen, nomor, tanggal, nama pemohon yang disamarkan, dan penandatangan. Tanpa NIK, alamat, atau isi surat. `APP_URL` kosong = QR surat pengantar tetap berupa teks lama.
+- **Email pemohon.** Saat surat pengantar disetujui, `Persetujuan.gs` mengirim email berisi tautan PDF ke email warga (bila terisi). Gratis lewat Gmail, batas 100 penerima per hari untuk akun Gmail biasa dan 1.500 untuk Google Workspace. Matikan dengan `KIRIM_EMAIL_PEMOHON = false`. Setelah menempel skrip baru, jalankan fungsi apa saja sekali dari editor dan setujui izin tambahan "mengirim email", lalu deploy versi baru.
+- **Pemantauan.** `Korespondensi.gs` mengirim email ke pemilik script (atau `PANTAU.EMAIL`) bila PDF arsip gagal dibuat atau tertunda lebih dari 30 menit; `Persetujuan.gs` bila persetujuan atau pengiriman email gagal. Paling banyak satu email per jenis galat per 3 sampai 6 jam. Tambahkan juga di Apps Script > Triggers > ikon pemicu > Failure notification settings > Notify me immediately.
+- **Pendataan hanya untuk Admin.** `cari_keluarga` kini wajib token Admin, dan `tambah_warga` menjadi fungsi internal (dipakai `tambah_anggota_keluarga` di MyData); Pendataan memakai `tambah_warga_admin`. Batasan yang tersisa: unggah berkas KK ke Storage masih dibatasi oleh aturan bucket (nama folder NKK, jenis dan ukuran berkas), bukan oleh token, sehingga belum bisa dibatasi hanya untuk Admin tanpa mengubah cara login.
 
 ### Lupa kata sandi admin / mengulang pembuatan admin
 Jalankan di Supabase > SQL Editor:
