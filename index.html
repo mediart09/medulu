@@ -877,6 +877,25 @@
   .mb:focus-visible{outline:3px solid rgba(21,88,201,.35);outline-offset:2px}
   /* Modal Buat Admin (muncul di halaman login selama belum ada admin; tidak bisa ditutup) */
   #modalAdminAwal{z-index:90}
+  /* Verifikasi dokumen (halaman tujuan QR: ?cek=NOMOR) */
+  #modalVerifikasi .modal-kotak{max-width:calc(380px * var(--z));text-align:left;max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain}
+  #modalVerifikasi .vf-status{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-weight:700;font-size:1.05em}
+  #modalVerifikasi .vf-status i{font-size:1.6em}
+  #modalVerifikasi .vf-sah{color:#15803d}
+  #modalVerifikasi .vf-tidak{color:#dc2626}
+  #modalVerifikasi .vf-baris{display:flex;gap:12px;justify-content:space-between;padding:7px 0;border-top:1px solid #e6ecf5;font-size:.82em}
+  #modalVerifikasi .vf-baris span:first-child{color:#64748b;flex:none}
+  #modalVerifikasi .vf-baris span:last-child{text-align:right;font-weight:600;word-break:break-word}
+  #modalVerifikasi .vf-catatan{margin:10px 0 0;font-size:.72em;color:#64748b}
+  /* Persetujuan penggunaan data (layar saat masuk + butir Bantuan) */
+  .ps-daftar{margin:6px 0 8px;padding-left:18px}
+  .ps-daftar li{margin:5px 0}
+  .ps-penutup{font-size:.78em;color:#64748b;margin:6px 0 0}
+  #modalPersetujuan .modal-kotak{max-width:calc(380px * var(--z));text-align:left;max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain}
+  #modalPersetujuan p{margin:0 0 6px}
+  #modalPersetujuan .ps-galat{min-height:1em;color:#dc2626;font-size:.74rem;margin:6px 0}
+  .pd .pd-setuju{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px;font-size:.78rem;color:#334155;line-height:1.45;cursor:pointer}
+  .pd .pd-setuju input{flex:none;width:18px;height:18px;margin:2px 0 0;padding:0}
   #modalAdminAwal .modal-kotak{max-width:calc(360px * var(--z));text-align:left;max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain}
   #modalAdminAwal .aa-bagian{margin:12px 0 8px;padding-top:10px;border-top:1px solid #e6ecf5;font-size:.72rem;font-weight:600;color:var(--biru-tua);letter-spacing:.02em}
   #modalAdminAwal .aa-bagian:first-of-type{margin-top:0;padding-top:0;border-top:0}
@@ -1856,6 +1875,29 @@
       <div class="aa-catatan">Catat kata sandi ini dengan aman. Wilayah RT dipakai pada nomor surat dan kop. Setelah admin dibuat, jendela ini tidak muncul lagi.</div>
     </form>
   </div>
+  <!-- Persetujuan penggunaan data: tampil setelah masuk bila warga belum menyetujui (versi teks berlaku) -->
+  <div class="modal-latar" id="modalPersetujuan" aria-hidden="true">
+    <div class="modal-kotak" role="dialog" aria-modal="true" aria-labelledby="psJudul">
+      <div class="modal-ikon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h3 id="psJudul">Persetujuan Penggunaan Data</h3>
+      <div id="psIsi"></div>
+      <div class="ps-galat" id="psGalat" role="alert"></div>
+      <div class="modal-aksi">
+        <button type="button" class="mb batal" id="psKeluar">Keluar</button>
+        <button type="button" class="mb ya" id="psSetuju">Saya mengerti dan setuju</button>
+      </div>
+    </div>
+  </div>
+  <!-- Verifikasi dokumen: terbuka otomatis bila alamat memuat ?cek=NOMOR (hasil memindai QR pada surat/laporan) -->
+  <div class="modal-latar" id="modalVerifikasi" aria-hidden="true">
+    <div class="modal-kotak" role="dialog" aria-modal="true" aria-labelledby="vfJudul">
+      <h3 id="vfJudul">Verifikasi Dokumen</h3>
+      <div id="vfIsi"></div>
+      <div class="modal-aksi" style="grid-template-columns:1fr">
+        <button type="button" class="mb ya" id="vfTutup">Tutup</button>
+      </div>
+    </div>
+  </div>
   <!-- Modal form (dipakai Korespondensi) -->
   <div class="mf-latar" id="modalForm" aria-hidden="true">
     <div class="mf-kotak" role="dialog" aria-modal="true" aria-labelledby="mfJudul">
@@ -2051,7 +2093,7 @@ function tampilkanUtama(profil){
   $('namaUser').textContent = namaTanpaGelar(profil.nama);
   perbaruiSapaan();
   muatStatistik();
-  cekUlangTahun();
+  if (!periksaPersetujuan(profil)) cekUlangTahun();       // ulang tahun tampil setelah persetujuan diberikan
 }
 function perbaruiSapaan(){
   $('teksSapaan').textContent = ucapanWaktu() + ',';
@@ -2064,6 +2106,7 @@ setInterval(perbaruiSapaan, 60 * 1000);
 async function mulai(){
   tokenSesi = ambilToken();
   muatIdentitasRt();                         // identitas wilayah RT (kop laporan, label RT)
+  periksaVerifikasi();                       // bila dibuka dari QR (?cek=NOMOR): tampilkan hasil verifikasi dokumen
   let profil = null;
   const tunggu = new Promise(r => setTimeout(r, DURASI_SPLASH));
 
@@ -2173,6 +2216,93 @@ function tutupModalAdminAwal(){
   $('login').inert = false;
   ['aaSandi','aaSandi2'].forEach(id => { $(id).value = ''; });
 }
+
+/* ---------- Persetujuan penggunaan data ----------
+   Teks tunggal: dipakai layar persetujuan saat masuk DAN butir 2 di Bantuan.
+   Bila isinya diubah, naikkan _versi_persetujuan() di 02_login_sesi.sql supaya warga diminta setuju lagi. */
+const TEKS_PERSETUJUAN = {
+  pembuka: 'Medulu menyimpan dan memakai data Anda dengan ketentuan berikut.',
+  butir: [
+    ['Data yang disimpan', 'NIK, nomor KK, identitas diri, alamat, kontak, dan berkas KK.'],
+    ['Tujuan', 'Administrasi RT dan layanan surat pengantar.'],
+    ['Yang dapat melihat', 'Ketua RT dan admin yang ditetapkan.'],
+    ['Lama penyimpanan', 'Selama Anda tercatat sebagai warga RT ini.'],
+    ['Koreksi atau hapus data', 'Hubungi pengurus RT.']
+  ],
+  penutup: 'Untuk anak atau warga yang belum dapat memberi persetujuan, persetujuan diberikan oleh orang tua atau wali.'
+};
+function htmlPersetujuan(){
+  const t = TEKS_PERSETUJUAN;
+  const h = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');   // esc() didefinisikan lebih bawah
+  return '<p>' + h(t.pembuka) + '</p><ul class="ps-daftar">' +
+         t.butir.map(b => '<li><b>' + h(b[0]) + '.</b> ' + h(b[1]) + '</li>').join('') +
+         '</ul><p class="ps-penutup">' + h(t.penutup) + '</p>';
+}
+$('bantuanPersetujuan').innerHTML = htmlPersetujuan();
+
+/* true bila layar persetujuan ditampilkan (profil.persetujuan_perlu dari server) */
+function periksaPersetujuan(profil){
+  if (!profil || profil.persetujuan_perlu !== true) return false;
+  $('psIsi').innerHTML = htmlPersetujuan();
+  $('psGalat').textContent = '';
+  $('psSetuju').disabled = false;
+  $('utama').inert = true;
+  const m = $('modalPersetujuan'); m.classList.add('tampil'); m.setAttribute('aria-hidden', 'false');
+  return true;
+}
+function tutupModalPersetujuan(){
+  const m = $('modalPersetujuan'); m.classList.remove('tampil'); m.setAttribute('aria-hidden', 'true');
+  $('utama').inert = false;
+}
+$('psSetuju').addEventListener('click', async () => {
+  const btn = $('psSetuju'); btn.disabled = true; $('psGalat').textContent = '';
+  try{
+    const { data, error } = await db.rpc('setujui_penggunaan_data', { p_token: tokenSesi });
+    if (error) throw error;
+    if (!data || !data.ok){ $('psGalat').textContent = (data && data.pesan) || 'Persetujuan gagal disimpan.'; btn.disabled = false; return; }
+    tutupModalPersetujuan();
+    cekUlangTahun();
+  }catch(e){ console.error(e); $('psGalat').textContent = 'Persetujuan gagal disimpan. Periksa koneksi lalu coba lagi.'; btn.disabled = false; }
+});
+$('psKeluar').addEventListener('click', () => { tutupModalPersetujuan(); keluar(); });
+
+/* ---------- Verifikasi dokumen (QR) ----------
+   QR pada surat pengantar dan laporan berisi tautan  <alamat aplikasi>?cek=<nomor dokumen>.
+   Siapa pun yang memindainya melihat apakah dokumen sah (data minimum, nama pemohon disamarkan). */
+const urlVerifikasi = (nomor) => location.protocol === 'file:' ? '' : location.origin + location.pathname + '?cek=' + encodeURIComponent(nomor);
+async function periksaVerifikasi(){
+  const nomor = (new URLSearchParams(location.search).get('cek') || '').trim();
+  if (!nomor) return;
+  const m = $('modalVerifikasi'), isi = $('vfIsi');
+  isi.innerHTML = '<p>Memeriksa dokumen…</p>';
+  m.classList.add('tampil'); m.setAttribute('aria-hidden', 'false');
+  let html;
+  try{
+    if (!KONFIG_SIAP) throw new Error('belum terhubung');
+    const { data, error } = await db.rpc('verifikasi_dokumen', { p_nomor: nomor });
+    if (error) throw error;
+    if (data && data.ok){
+      const baris = (k, v) => v ? '<div class="vf-baris"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>' : '';
+      html = '<div class="vf-status vf-sah"><i class="fa-solid fa-circle-check"></i> Dokumen sah</div>' +
+        baris('Dokumen', data.dokumen) + baris(data.dokumen === 'Surat Pengantar' ? 'Jenis' : 'Periode', data.jenis) +
+        baris('Nomor', data.nomor) + baris('Tanggal', data.tanggal) + baris('Pemohon', data.pemohon) +
+        baris('Penandatangan', [data.penandatangan, data.jabatan].filter(Boolean).join(', ')) + baris('Wilayah', data.wilayah) +
+        '<p class="vf-catatan">Pastikan nomor dan tanggal di atas sama dengan yang tertera pada dokumen di tangan Anda.</p>';
+    } else {
+      html = '<div class="vf-status vf-tidak"><i class="fa-solid fa-circle-xmark"></i> Dokumen tidak ditemukan</div>' +
+        '<p>' + esc((data && data.pesan) || 'Nomor dokumen tidak terdaftar.') + '</p>' +
+        '<p class="vf-catatan">Nomor yang diperiksa: ' + esc(nomor) + '. Hubungi pengurus RT bila Anda ragu atas keaslian dokumen.</p>';
+    }
+  }catch(e){
+    console.error(e);
+    html = '<div class="vf-status vf-tidak"><i class="fa-solid fa-triangle-exclamation"></i> Pemeriksaan gagal</div><p>Periksa koneksi internet lalu pindai ulang.</p>';
+  }
+  isi.innerHTML = html;
+}
+$('vfTutup').addEventListener('click', () => {
+  const m = $('modalVerifikasi'); m.classList.remove('tampil'); m.setAttribute('aria-hidden', 'true');
+  history.replaceState(null, '', location.pathname);
+});
 $('aaMata').addEventListener('click', () => {
   const i = $('aaSandi'), sembunyi = i.type === 'password';
   i.type = sembunyi ? 'text' : 'password';
@@ -2813,10 +2943,25 @@ function renderBantuan(isi){
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
+            <div class="faq-icon-box icon-blue">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <span>2. Bagaimana data saya disimpan dan digunakan?</span>
+          </button>
+        </h2>
+        <div class="accordion-collapse collapse">
+          <div class="accordion-body" id="bantuanPersetujuan"></div>
+        </div>
+      </div>
+
+      <!-- Pertanyaan 3 -->
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-green">
               <i class="fa-solid fa-users"></i>
             </div>
-            <span>2. Siapa saja yang dapat menggunakan Medulu?</span>
+            <span>3. Siapa saja yang dapat menggunakan Medulu?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2826,14 +2971,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 3 -->
+      <!-- Pertanyaan 4 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-purple">
               <i class="fa-solid fa-id-card"></i>
             </div>
-            <span>3. Apa saja yang ada di MyData?</span>
+            <span>4. Apa saja yang ada di MyData?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2848,14 +2993,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 4 -->
+      <!-- Pertanyaan 5 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-amber">
               <i class="fa-solid fa-box-archive"></i>
             </div>
-            <span>4. Apa itu Info Arsip &amp; Aset?</span>
+            <span>5. Apa itu Info Arsip &amp; Aset?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2871,14 +3016,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 5 -->
+      <!-- Pertanyaan 6 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-rose">
               <i class="fa-solid fa-clipboard-user"></i>
             </div>
-            <span>5. Bagaimana Absensi Ronda bekerja?</span>
+            <span>6. Bagaimana Absensi Ronda bekerja?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2895,14 +3040,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 6 -->
+      <!-- Pertanyaan 7 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-indigo">
               <i class="fa-solid fa-file-signature"></i>
             </div>
-            <span>6. Bagaimana bermohon Surat Pengantar RT?</span>
+            <span>7. Bagaimana bermohon Surat Pengantar RT?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2922,14 +3067,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 7 -->
+      <!-- Pertanyaan 8 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-orange">
               <i class="fa-solid fa-bullhorn"></i>
             </div>
-            <span>7. Apa itu Info Aktual?</span>
+            <span>8. Apa itu Info Aktual?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2945,14 +3090,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 8 -->
+      <!-- Pertanyaan 9 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-cyan">
               <i class="fa-solid fa-landmark"></i>
             </div>
-            <span>8. Apa saja yang ada di Profil RT?</span>
+            <span>9. Apa saja yang ada di Profil RT?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2970,14 +3115,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 9 -->
+      <!-- Pertanyaan 10 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-slate">
               <i class="fa-solid fa-square-poll-vertical"></i>
             </div>
-            <span>9. Bagaimana mengikuti Polling?</span>
+            <span>10. Bagaimana mengikuti Polling?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -2993,14 +3138,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 10 -->
+      <!-- Pertanyaan 11 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-teal">
               <i class="fa-solid fa-shield-halved"></i>
             </div>
-            <span>10. Apakah Medulu aman dan gratis?</span>
+            <span>11. Apakah Medulu aman dan gratis?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -3013,14 +3158,14 @@ function renderBantuan(isi){
         </div>
       </div>
 
-      <!-- Pertanyaan 11 -->
+      <!-- Pertanyaan 12 -->
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-emerald">
               <i class="fa-solid fa-headset"></i>
             </div>
-            <span>11. Siapa yang dapat dihubungi jika ada kendala?</span>
+            <span>12. Siapa yang dapat dihubungi jika ada kendala?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -3641,7 +3786,7 @@ function setIkonHeader(jk){
 /* =====================================================================
    PENDATAAN: formulir input data warga (NKK, data keluarga, data pribadi, berkas KK).
    Tertanam langsung di Medulu (bukan iframe) dan memakai koneksi Supabase `db` yang sama.
-   RPC: cari_keluarga, tambah_warga (file SQL 01); berkas KK -> bucket privat "kk".
+   RPC (khusus Admin, memakai token sesi): cari_keluarga, tambah_warga_admin (file SQL 01); berkas KK -> bucket privat "kk".
    Hasil input langsung masuk ke tabel warga (master data).
    ===================================================================== */
 function renderPendataan(isi){
@@ -3795,6 +3940,7 @@ function renderPendataan(isi){
         </div>
       </section>
 
+      <label class="pd-setuju"><input type="checkbox" id="pd_persetujuan"><span>Saya menyatakan data ini diinput dengan sepengetahuan dan persetujuan pemilik data (atau orang tua/wali bagi anak).</span></label>
       <button class="pd-btn" id="pd_btnSimpan" type="submit"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
     </form>
   </div>`;
@@ -3889,7 +4035,7 @@ function renderPendataan(isi){
     const tombol = P('btnVerifikasi');
     if (denganTelp){ tombol.disabled = true; tombol.textContent = 'Memeriksa…'; }
     try{
-      const { data, error } = await db.rpc('cari_keluarga', { p_nkk: nkk, p_telp: denganTelp ? P('no_hp').value : '' });
+      const { data, error } = await db.rpc('cari_keluarga', { p_token: tokenSesi, p_nkk: nkk, p_telp: denganTelp ? P('no_hp').value : '' });
       if (error) throw error;
       if (nkk !== hanyaAngka(P('nkk').value)) return;          // NKK diubah saat menunggu
 
@@ -4039,6 +4185,7 @@ function renderPendataan(isi){
     if (!P('nama_lengkap').value.trim()) return ['nama_lengkap','Nama lengkap wajib diisi.'];
     if (!P('jender').value) return ['jender','Jender wajib dipilih.'];
     if (!P('tgl_lahir').value) return ['tgl_lahir','Tanggal lahir wajib diisi (dipakai untuk usia & status pemilu).'];
+    if (!P('persetujuan').checked) return ['persetujuan','Centang pernyataan persetujuan pemilik data terlebih dahulu.'];
     return null;
   }
 
@@ -4062,10 +4209,14 @@ function renderPendataan(isi){
         nama_kk: P('nama_kk').value.trim(), hubungan: P('hubungan').value, no_hp: P('no_hp').value.trim(),
         link_kk: pathKk, status_tinggal: P('status_tinggal').value
       };
-      const { data, error } = await db.rpc('tambah_warga', { p: payload });
+      const { data, error } = await db.rpc('tambah_warga_admin', { p_token: tokenSesi, p: payload });
       if (error) throw error;
       if (!data.ok){ tampilBanner('galat', data.pesan); keAtas(); return; }
-    muatStatistik();                         // segarkan angka KK/Jiwa/Wafat & grafik di header beranda
+      muatStatistik();                       // segarkan angka KK/Jiwa/Wafat & grafik di header beranda
+      try{                                   // catat pernyataan persetujuan pemilik data (waktu + admin yang menginput)
+        await db.rpc('catat_persetujuan_admin', { p_token: tokenSesi, p_nik: payload.nik });
+      }catch(e){ console.error(e); }
+      P('persetujuan').checked = false;
 
       P('ringkasSukses').replaceChildren();
       const baris = (teks, tebal) => {
@@ -4548,7 +4699,7 @@ async function formNotula(){
 const LAP = {
   judul:'Laporan Kondusifitas Wilayah', judul2:'',          // kop diisi dari identitas RT (LAP_ISI_IDENT) setelah dimuat
   qr:'Ketua RT', nama:'', jabatan:'Ketua RT',     // nama Ketua RT diisi dari identitas RT (LAP_ISI_IDENT)
-  qrMm:17.2,        // ukuran QR (setara 65 px)
+  qrMm:22,          // ukuran QR (mm): berisi tautan verifikasi, jadi lebih padat daripada teks biasa
   jarakMm:6.4       // jarak QR dari tabel (setara 24 px)
 };
 /* Kop laporan mengikuti identitas wilayah RT: "Laporan Kondusifitas Wilayah RT.09 RW.05" /
@@ -4803,7 +4954,7 @@ async function lapBuatPdf(awal, akhir, rows, nomor, dicetak){
   let yb = doc.lastAutoTable.finalY + LAP.jarakMm;
   if (yb + qrS > H - M){ doc.addPage(); yb = M; }
 
-  const q = window.qrcode(0, 'M'); q.addData(LAP.qr + ' | ' + nomor); q.make();
+  const q = window.qrcode(0, 'M'); q.addData(urlVerifikasi(nomor) || (LAP.qr + ' | ' + nomor)); q.make();   // tautan verifikasi; teks bila dibuka dari file
   const n = q.getModuleCount(), sel = qrS / n;
   doc.setFillColor(0, 0, 0);
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) doc.rect(x0 + c * sel, yb + r * sel, sel + 0.03, sel + 0.03, 'F');
