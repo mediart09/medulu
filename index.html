@@ -2238,7 +2238,6 @@ function htmlPersetujuan(){
          t.butir.map(b => '<li><b>' + h(b[0]) + '.</b> ' + h(b[1]) + '</li>').join('') +
          '</ul><p class="ps-penutup">' + h(t.penutup) + '</p>';
 }
-$('bantuanPersetujuan').innerHTML = htmlPersetujuan();
 
 /* true bila layar persetujuan ditampilkan (profil.persetujuan_perlu dari server) */
 function periksaPersetujuan(profil){
@@ -3184,6 +3183,8 @@ function renderBantuan(isi){
 
     </div>
   </div>`;
+  const pers = $('bantuanPersetujuan');
+  if (pers) pers.innerHTML = htmlPersetujuan();
   const root = $('btRoot');
   root.addEventListener('click', (e) => {
     const tombol = e.target.closest('.accordion-button');
