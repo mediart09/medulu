@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b2a6f">
+<!-- Aplikasi yang dapat dipasang di layar utama (PWA): berkas manifest.json dan service-worker.js harus satu folder dengan index.html -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/q7sznixw/image/upload/w_192,h_192,c_pad,b_white/v1793918148/Medulu_vyxqyb.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/q7sznixw/image/upload/w_180,h_180,c_pad,b_white/v1793918148/Medulu_vyxqyb.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Medulu">
 <title>Manajemen Data Terpadu untuk Layanan Publik</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2283,7 +2290,8 @@ async function periksaVerifikasi(){
     if (data && data.ok){
       const baris = (k, v) => v ? '<div class="vf-baris"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>' : '';
       html = '<div class="vf-status vf-sah"><i class="fa-solid fa-circle-check"></i> Dokumen sah</div>' +
-        baris('Dokumen', data.dokumen) + baris(data.dokumen === 'Surat Pengantar' ? 'Jenis' : 'Periode', data.jenis) +
+        baris('Dokumen', data.dokumen) +
+        baris({ 'Surat Pengantar': 'Jenis', 'Laporan Kondusifitas Wilayah': 'Periode' }[data.dokumen] || 'Perihal', data.jenis) +
         baris('Nomor', data.nomor) + baris('Tanggal', data.tanggal) + baris('Pemohon', data.pemohon) +
         baris('Penandatangan', [data.penandatangan, data.jabatan].filter(Boolean).join(', ')) + baris('Wilayah', data.wilayah) +
         '<p class="vf-catatan">Pastikan nomor dan tanggal di atas sama dengan yang tertera pada dokumen di tangan Anda.</p>';
@@ -3161,10 +3169,32 @@ function renderBantuan(isi){
       <div class="accordion-item faq-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" aria-expanded="false">
+            <div class="faq-icon-box icon-blue">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <span>12. Bagaimana memasang Medulu di layar HP?</span>
+          </button>
+        </h2>
+        <div class="accordion-collapse collapse">
+          <div class="accordion-body">
+            Medulu dapat dipasang di layar utama HP agar terbuka seperti aplikasi biasa, tanpa mengetik alamat.
+            <ul class="ps-daftar">
+              <li><b>Android (Chrome).</b> Buka Medulu, ketuk menu titik tiga di pojok kanan atas, lalu pilih <i>Pasang aplikasi</i> atau <i>Tambahkan ke layar utama</i>.</li>
+              <li><b>iPhone (Safari).</b> Buka Medulu, ketuk tombol Bagikan, lalu pilih <i>Tambah ke Layar Utama</i>.</li>
+            </ul>
+            <p class="ps-penutup">Medulu tetap memerlukan internet untuk membuka data.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pertanyaan 13 -->
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" aria-expanded="false">
             <div class="faq-icon-box icon-emerald">
               <i class="fa-solid fa-headset"></i>
             </div>
-            <span>12. Siapa yang dapat dihubungi jika ada kendala?</span>
+            <span>13. Siapa yang dapat dihubungi jika ada kendala?</span>
           </button>
         </h2>
         <div class="accordion-collapse collapse">
@@ -7387,6 +7417,11 @@ pasangCarousel('dsGeser', 'dsTitik', { panah: true, ujung: true });   // Data St
 pasangCarousel('spGeser', 'spTitik', { otomatis: 3000, bertahap: true });   // Standar Pelayanan: geser manual / otomatis tiap 3 detik
 
 mulai();
+
+/* PWA: daftarkan service worker (hanya lewat https atau localhost) */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+  window.addEventListener('load', () => { navigator.serviceWorker.register('service-worker.js').catch(e => console.warn('Service worker gagal didaftarkan', e)); });
+}
 
 /* Login: jarak tepi atas kartu ke logo (yang terlihat) disamakan dengan jarak teks terakhir ke tepi bawah kartu.
    Ruang transparan di atas gambar logo diukur otomatis; bila gagal diukur, CSS bawaan tetap dipakai. */
