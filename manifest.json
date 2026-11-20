@@ -1,0 +1,32 @@
+{
+  "id": "./",
+  "name": "Medulu - Manajemen Data Terpadu untuk Layanan Publik",
+  "short_name": "Medulu",
+  "description": "Layanan administrasi dan informasi RT berbasis digital.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b2a6f",
+  "theme_color": "#0b2a6f",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/q7sznixw/image/upload/w_192,h_192,c_pad,b_white/v1793918148/Medulu_vyxqyb.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://res.cloudinary.com/q7sznixw/image/upload/w_512,h_512,c_pad,b_white/v1793918148/Medulu_vyxqyb.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://res.cloudinary.com/q7sznixw/image/upload/w_400,h_400,c_fit/w_512,h_512,c_pad,b_white/v1793918148/Medulu_vyxqyb.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
