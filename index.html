@@ -107,7 +107,8 @@
     position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));padding:0 28px;
     text-align:center;color:rgba(255,255,255,.85);font-size:.72rem;line-height:1.5;
   }
-  .footer-splash div+div{margin-top:3px}
+  .footer-splash div+div{margin-top:0}                 /* baris 1-2 dan 3-4 saling merapat */
+  .footer-splash div:nth-child(3){margin-top:3px}      /* jarak baris 2 ke 3 tetap seperti semula */
   .footer-splash .versi-app{font-weight:700;color:#fff}
   @keyframes muncul{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   .logo-pusat img{animation-name:muncul-logo}
@@ -1666,7 +1667,7 @@
     </div>
     <div class="footer-splash">
       <div>Manajemen Data Terpadu untuk Layanan Publik.</div>
-      <div>Sistem digitalisasi informasi dan administrasi RT.</div>
+      <div>Layanan administrasi dan informasi berbasis digital.</div>
       <div>Powered by Anto Design Concept &copy; 2026</div>
       <div class="versi-app">Versi 4.10</div>
     </div>
