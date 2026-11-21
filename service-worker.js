@@ -4,7 +4,7 @@
  *  - Permintaan ke Supabase, Apps Script, Cloudinary, dan CDN tidak disentuh sama sekali (langsung ke jaringan).
  * Saat ada perubahan pada berkas ini, naikkan VERSI supaya simpanan lama dibuang.
  */
-const VERSI = 'medulu-v1';
+const VERSI = 'medulu-v2';
 const OFFLINE = '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
   '<title>Medulu</title><style>body{font-family:system-ui,sans-serif;background:#0b2a6f;color:#fff;display:flex;min-height:100vh;' +
   'align-items:center;justify-content:center;text-align:center;margin:0;padding:24px}h1{font-size:1.2rem}p{opacity:.85}</style></head>' +
