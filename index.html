@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0b2a6f">
 <!-- Aplikasi yang dapat dipasang di layar utama (PWA): berkas manifest.json dan service-worker.js harus satu folder dengan index.html -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/q7sznixw/image/upload/w_192,h_192,c_pad/v1795224072/MeduluIcon_uv9q2o.png">
-<link rel="apple-touch-icon" href="https://res.cloudinary.com/q7sznixw/image/upload/w_180,h_180,c_pad,b_rgb:0b2a6f/v1795224072/MeduluIcon_uv9q2o.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/q7sznixw/image/upload/w_150,h_150,c_fit/w_192,h_192,c_pad/v1795224072/MeduluIcon_uv9q2o.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/q7sznixw/image/upload/w_126,h_126,c_fit/w_180,h_180,c_pad,b_rgb:0b2a6f/v1795224072/MeduluIcon_uv9q2o.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Medulu">
@@ -1890,7 +1890,7 @@
       <div id="psIsi"></div>
       <div class="ps-galat" id="psGalat" role="alert"></div>
       <div class="modal-aksi">
-        <button type="button" class="mb batal" id="psKeluar">Keluar</button>
+        <button type="button" class="mb batal" id="psKeluar">Batal</button>
         <button type="button" class="mb ya" id="psSetuju">Saya mengerti dan setuju</button>
       </div>
     </div>
@@ -2252,14 +2252,14 @@ function periksaPersetujuan(profil){
   if (!profil || profil.persetujuan_perlu !== true) return false;
   $('psIsi').innerHTML = htmlPersetujuan();
   $('psGalat').textContent = '';
-  $('psSetuju').disabled = false;
-  $('utama').inert = true;
+  $('psSetuju').disabled = false; $('psKeluar').disabled = false;
+  $('utama').inert = true; $('utama').style.visibility = 'hidden';      // isi aplikasi tidak terlihat sebelum menyetujui
   const m = $('modalPersetujuan'); m.classList.add('tampil'); m.setAttribute('aria-hidden', 'false');
   return true;
 }
 function tutupModalPersetujuan(){
   const m = $('modalPersetujuan'); m.classList.remove('tampil'); m.setAttribute('aria-hidden', 'true');
-  $('utama').inert = false;
+  $('utama').inert = false; $('utama').style.visibility = '';
 }
 $('psSetuju').addEventListener('click', async () => {
   const btn = $('psSetuju'); btn.disabled = true; $('psGalat').textContent = '';
@@ -2271,7 +2271,14 @@ $('psSetuju').addEventListener('click', async () => {
     cekUlangTahun();
   }catch(e){ console.error(e); $('psGalat').textContent = 'Persetujuan gagal disimpan. Periksa koneksi lalu coba lagi.'; btn.disabled = false; }
 });
-$('psKeluar').addEventListener('click', () => { tutupModalPersetujuan(); keluar(); });
+/* Batal = login dibatalkan: sesi diakhiri tanpa pertanyaan dan layar persetujuan muncul lagi pada login berikutnya
+   (persetujuan hanya tercatat bila tombol setuju ditekan). Tidak ada jalan untuk melewatinya. */
+$('psKeluar').addEventListener('click', async () => {
+  $('psKeluar').disabled = true; $('psSetuju').disabled = true;
+  tutupModalPersetujuan();
+  await keluarSekarang();
+  toast('Login dibatalkan. Medulu hanya dapat dipakai setelah Anda menyetujui penggunaan data.');
+});
 
 /* ---------- Verifikasi dokumen (QR) ----------
    QR pada surat pengantar dan laporan berisi tautan  <alamat aplikasi>?cek=<nomor dokumen>.
@@ -2387,11 +2394,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
-async function keluar(){
-  if (!(await konfirmasiKeluar())) return;
+async function keluarSekarang(){
   try{ await db.rpc('logout_warga', { p_token: tokenSesi }); }catch(e){}
   hapusToken(); tokenSesi = null; statistik = null; statDetail = null; statKr = null; arData = null; telpLogin = '';
   tampilkanLogin();
+}
+async function keluar(){
+  if (!(await konfirmasiKeluar())) return;
+  await keluarSekarang();
 }
 $('btnKeluar').addEventListener('click', keluar);
 
@@ -3757,7 +3767,7 @@ async function renderProfilRT(isi, pertahankan){
       (admin ? `<div class="pr-aksi"><button type="button" class="pr-btn ${urlPeta ? 'edit' : ''}" data-prbtn="peta">
         <i class="fa-solid ${urlPeta ? 'fa-pen-to-square' : 'fa-upload'}"></i> ${urlPeta ? 'Edit' : 'Unggah Gambar'}</button>
         <input type="file" id="prFilePeta" accept="image/webp,.webp" hidden></div>
-        <div class="pr-ket-webp"><i class="fa-solid fa-circle-info"></i> Gambar yang diunggah adalah tipe webP. Silakan convert tipe gambar anda ke webP secara online, download hasil convert dan unggah disini.</div>` : '') +
+        ${urlPeta ? '' : `<div class="pr-ket-webp"><i class="fa-solid fa-circle-info"></i> Gambar yang diunggah adalah tipe webP. Silakan convert tipe gambar anda ke webP secara online, download hasil convert dan unggah disini.</div>`}` : '') +
       (urlPeta ? `<div class="pr-map" data-prpeta><img src="${esc(urlPeta)}" alt="Peta Batas Wilayah RT"><div class="pr-map-badge"><i class="fa-solid fa-expand"></i> Perbesar Peta</div></div>`
                : prKosong('Belum ada gambar batas wilayah.')))}
     ${sek('bangunan', 'Keadaan Bangunan', prHtmlBangunan())}
