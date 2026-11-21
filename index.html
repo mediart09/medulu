@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0b2a6f">
 <!-- Aplikasi yang dapat dipasang di layar utama (PWA): berkas manifest.json dan service-worker.js harus satu folder dengan index.html -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/q7sznixw/image/upload/w_192,h_192,c_pad,b_white/v1793918148/Medulu_vyxqyb.png">
-<link rel="apple-touch-icon" href="https://res.cloudinary.com/q7sznixw/image/upload/w_180,h_180,c_pad,b_white/v1793918148/Medulu_vyxqyb.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/q7sznixw/image/upload/w_192,h_192,c_pad/v1795224072/MeduluIcon_uv9q2o.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/q7sznixw/image/upload/w_180,h_180,c_pad,b_rgb:0b2a6f/v1795224072/MeduluIcon_uv9q2o.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Medulu">
@@ -2115,7 +2115,8 @@ async function mulai(){
   muatIdentitasRt();                         // identitas wilayah RT (kop laporan, label RT)
   periksaVerifikasi();                       // bila dibuka dari QR (?cek=NOMOR): tampilkan hasil verifikasi dokumen
   let profil = null;
-  const tunggu = new Promise(r => setTimeout(r, DURASI_SPLASH));
+  const dariQr = !!(new URLSearchParams(location.search).get('cek') || '').trim();       // dibuka dari QR: hasil verifikasi tidak perlu menunggu splash
+  const tunggu = new Promise(r => setTimeout(r, dariQr ? 400 : DURASI_SPLASH));
 
   if (tokenSesi && KONFIG_SIAP){
     try{
